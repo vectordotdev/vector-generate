@@ -1,0 +1,8 @@
+[submodule "targets/vector-website"]
+	path = targets/vector-website
+	url = https://github.com/timberio/vector-website
+	branch = master
+[submodule "targets/vector"]
+	path = targets/vector
+	url = https://github.com/timberio/vector
+	branch = master
