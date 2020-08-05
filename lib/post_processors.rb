@@ -1,3 +1,4 @@
+require_relative "post_processors/autogenerate_labeler"
 require_relative "post_processors/component_importer"
 require_relative "post_processors/front_matter_validator"
 require_relative "post_processors/last_modified_setter"

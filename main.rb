@@ -46,6 +46,7 @@ def render_templates(metadata, target_dir, relative_link_paths)
 		  content = PostProcessors::SectionReferencer.reference!(content)
 		  content = PostProcessors::OptionLinker.link!(content)
 		  content = PostProcessors::LinkDefiner.define!(content, metadata.links, relative_link_paths)
+		  content = PostProcessors::AutogenerateLabeler.label!(content, template)
 		  # must be last
 		  content = PostProcessors::LastModifiedSetter.set!(content, template)
 

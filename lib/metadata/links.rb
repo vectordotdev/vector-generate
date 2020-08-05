@@ -41,7 +41,10 @@ class Metadata
       parsed_id = parse_id!(id)
 
       if @links[parsed_id.category] && @links[parsed_id.category][parsed_id.name]
-        @links[parsed_id.category][parsed_id.name]
+        value = @links[parsed_id.category][parsed_id.name]
+        value = [value, parsed_id.query].compact.join("?")
+        value = [value, parsed_id.anchor].compact.join("#")
+        value
       else
         @resolver.resolve!(parsed_id)
       end

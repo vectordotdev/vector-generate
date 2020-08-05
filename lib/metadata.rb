@@ -123,7 +123,7 @@ class Metadata
 
     # links
 
-    @links = Links.new(vector_meta.fetch("links"), permalinks)
+    @links = Links.new(global_meta.fetch("links"), permalinks)
 
     # env vars
 

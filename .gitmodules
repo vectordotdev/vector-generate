@@ -1,16 +1,16 @@
 [submodule "targets/vector-website"]
 	path = targets/vector-website
-	url = https://github.com/timberio/vector-website
+	url = git@github.com:timberio/vector-website.git
 	branch = master
 [submodule "targets/vector"]
 	path = targets/vector
-	url = https://github.com/timberio/vector
+	url = git@github.com:timberio/vector.git
 	branch = master
 [submodule ".meta/vector/v0.10"]
 	path = .meta/vector/v0.10
-	url = https://github.com/timberio/vector
+	url = git@github.com:timberio/vector.git
 	branch = v0.10
 [submodule ".meta/vector/master"]
 	path = .meta/vector/master
-	url = https://github.com/timberio/vector
+	url = git@github.com:timberio/vector.git
 	branch = master

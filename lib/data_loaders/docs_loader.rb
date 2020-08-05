@@ -17,7 +17,7 @@ module DataLoaders
   			parsed = FrontMatterParser::Parser.parse_file(path)
     		front_matter = parsed.front_matter
     		id = path.sub(dir, '').sub(/\.md$/, "")
-  			permalink = "#{DOCS_PATH}#{id}"
+  			permalink = "#{DOCS_PATH}#{id}/"
 
     		front_matter.clone.merge({
     			"id" => id,

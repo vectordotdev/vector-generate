@@ -36,7 +36,7 @@ class Metadata
 
 		      found_permalinks =
 		        category_permalinks.select do |permalink|
-		          permalink.gsub("-", "_").end_with?(parsed_id.normalized_name)
+		          permalink.gsub("-", "_").gsub(/\/$/, "").end_with?(parsed_id.normalized_name)
 		        end
 
 		      if found_permalinks.length == 1

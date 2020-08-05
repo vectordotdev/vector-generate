@@ -15,7 +15,7 @@ module DataLoaders
   	private
   		def parse_file!(dir, path)
     		id = path.sub(dir, '').sub(/\.js$/, "")
-  			permalink = id
+  			permalink = "#{id}/"
 
     		{
     			"id" => id,

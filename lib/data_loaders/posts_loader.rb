@@ -21,7 +21,7 @@ module DataLoaders
 
     		front_matter = parsed.front_matter
     		id = path.sub(dir, '').sub(/\.md$/, "")
-  	    permalink = "#{POSTS_PATH}#{id}"
+  	    permalink = "#{POSTS_PATH}#{id}/"
 
     		front_matter.clone.merge({
     			"date" => date,
