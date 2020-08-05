@@ -1,0 +1,1435 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"vers",
+				"version_string"
+			],
+			[
+				"vec",
+				"vector_version_dir"
+			],
+			[
+				"ifm-pane-bor",
+				"ifm-panel-border-color-active"
+			],
+			[
+				"ifm-pane",
+				"ifm-panel-background-color-active"
+			],
+			[
+				"auth",
+				"authorGithub"
+			],
+			[
+				"ifm-emph",
+				"ifm-color-emphasis-600"
+			],
+			[
+				"ifm-color-prim",
+				"ifm-color-primary"
+			],
+			[
+				"ifms-",
+				"ifm-spacing-horizontal"
+			],
+			[
+				"ifm-sp",
+				"ifm-spacing-horizontal"
+			],
+			[
+				"filter",
+				"filteredItems"
+			],
+			[
+				"High",
+				"HighlightItems"
+			],
+			[
+				"add",
+				"additionalProperties"
+			],
+			[
+				"chil",
+				"children_list"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "main.rb",
+			"settings":
+			{
+				"buffer_size": 436,
+				"encoding": "UTF-8",
+				"line_ending": "Unix",
+				"name": "main.rb"
+			}
+		},
+		{
+			"contents": "Searching 2864 files for \"META_ROOT\"\n\n/Users/benjohnson/Code/timber/vector-generate/.meta/vector/v0.10/scripts/generate.rb:\n  192  #\n  193  \n  194: metadata = Metadata.load!(META_ROOT, DOCS_ROOT, GUIDES_ROOT, PAGES_ROOT)\n  195  templates = Templates.new(ROOT_DIR, metadata)\n  196  \n  ...\n  344    Dir.glob(\"#{ROOT_DIR}/**/[^_]*.erb\", File::FNM_DOTMATCH).\n  345    to_a.\n  346:   filter { |path| !path.start_with?(\"#{META_ROOT}/\") || path.start_with?(\"#{META_ROOT}/.schemas/\") }.\n  347    filter { |path| !path.start_with?(\"#{ROOT_DIR}/scripts/\") }.\n  348    filter { |path| !path.start_with?(\"#{ROOT_DIR}/distribution/nix/\") }\n  ...\n  363  #\n  364  \n  365: metadata = Metadata.load!(META_ROOT, DOCS_ROOT, GUIDES_ROOT, PAGES_ROOT)\n  366  templates = Templates.new(ROOT_DIR, metadata)\n  367  root_erb_paths = erb_paths.select { |path| !templates.partial?(path) }\n\n/Users/benjohnson/Code/timber/vector-generate/.meta/vector/v0.10/scripts/keywords.rb:\n   46  #\n   47  \n   48: metadata = Metadata.load!(META_ROOT, DOCS_ROOT, GUIDES_ROOT, PAGES_ROOT)\n   49  \n   50  sources =\n\n/Users/benjohnson/Code/timber/vector-generate/.meta/vector/v0.10/scripts/release-commit.rb:\n   41  #\n   42  \n   43: metadata = Metadata.load!(META_ROOT, DOCS_ROOT, GUIDES_ROOT, PAGES_ROOT)\n   44  release = metadata.latest_release\n   45  \n\n/Users/benjohnson/Code/timber/vector-generate/.meta/vector/v0.10/scripts/release-github.rb:\n   20  #\n   21  \n   22: metadata = Metadata.load!(META_ROOT, DOCS_ROOT, GUIDES_ROOT, PAGES_ROOT)\n   23  release = metadata.releases.to_h.fetch(:\"#{VERSION}\")\n   24  \n\n/Users/benjohnson/Code/timber/vector-generate/.meta/vector/v0.10/scripts/release-rollback.rb:\n   14  #\n   15  \n   16: metadata = Metadata.load!(META_ROOT, DOCS_ROOT, GUIDES_ROOT, PAGES_ROOT)\n   17  release = metadata.latest_release\n   18  version = release.version\n\n/Users/benjohnson/Code/timber/vector-generate/.meta/vector/v0.10/scripts/setup.rb:\n   68  HIGHLIGHTS_HOST = \"#{HOST}#{HIGHLIGHTS_BASE_PATH}\".freeze\n   69  HIGHLIGHTS_ROOT = File.join(ROOT_DIR, \"website\", \"highlights\").freeze\n   70: META_ROOT = File.join(ROOT_DIR, \".meta\").freeze\n   71  PAGES_ROOT = File.join(ROOT_DIR, \"website\", \"src\", \"pages\").freeze\n   72  POSTS_ROOT = File.join(ROOT_DIR, \"website\", \"blog\").freeze\n\n/Users/benjohnson/Code/timber/vector-generate/.meta/vector/v0.10/scripts/util/metadata.rb:\n   33        end\n   34  \n   35:       full_path = path.start_with?(\"/\") ? path : \"#{META_ROOT}/#{path}\"\n   36  \n   37        if !File.exists?(full_path) && File.exists?(\"#{full_path}.erb\")\n\n/Users/benjohnson/Code/timber/vector-generate/lib/metadata.rb:\n   33        end\n   34  \n   35:       full_path = path.start_with?(\"/\") ? path : \"#{META_ROOT}/#{path}\"\n   36  \n   37        if !File.exists?(full_path) && File.exists?(\"#{full_path}.erb\")\n\n/Users/benjohnson/Code/timber/vector-generate/targets/vector/scripts/load-meta.rb:\n   17  require \"toml-rb\"\n   18  \n   19: META_ROOT = \"#{Dir.pwd}/.meta\"\n   20  \n   21  class Object\n   ..\n   88    end\n   89  \n   90:   full_path = path.start_with?(\"/\") ? path : \"#{META_ROOT}/#{path}\"\n   91  \n   92    if !File.exists?(full_path) && File.exists?(\"#{full_path}.erb\")\n   ..\n  104  \n  105    contents =\n  106:     Dir.glob(\"#{META_ROOT}/**/[^_]*.{toml,toml.erb}\").\n  107        sort.\n  108:       unshift(\"#{META_ROOT}/root.toml\"). # move to the front\n  109        uniq.\n  110        collect do |file|\n\n/Users/benjohnson/Code/timber/vector-generate/targets/vector/scripts/release-commit.rb:\n   41  #\n   42  \n   43: metadata = Metadata.load!(META_ROOT, DOCS_ROOT, GUIDES_ROOT, PAGES_ROOT)\n   44  release = metadata.latest_release\n   45  \n\n/Users/benjohnson/Code/timber/vector-generate/targets/vector/scripts/release-github.rb:\n   20  #\n   21  \n   22: metadata = Metadata.load!(META_ROOT, DOCS_ROOT, GUIDES_ROOT, PAGES_ROOT)\n   23  release = metadata.releases.to_h.fetch(:\"#{VERSION}\")\n   24  \n\n/Users/benjohnson/Code/timber/vector-generate/targets/vector/scripts/release-rollback.rb:\n   14  #\n   15  \n   16: metadata = Metadata.load!(META_ROOT, DOCS_ROOT, GUIDES_ROOT, PAGES_ROOT)\n   17  release = metadata.latest_release\n   18  version = release.version\n\n/Users/benjohnson/Code/timber/vector-generate/targets/vector-website/scripts/generate.rb:\n   44  \n   45  BLACKLISTED_TEMPLATE_PATHS = [\n   46:   \"#{META_ROOT}/\",\n   47    \"#{ROOT_DIR}/scripts/\",\n   48    \"#{VECTOR_ROOT}/distribution/nix/\",\n   ..\n  199  #\n  200  \n  201: metadata = Metadata.load!(META_ROOT, DOCS_ROOT, GUIDES_ROOT, PAGES_ROOT)\n  202  templates = Templates.new(ROOT_DIR, metadata)\n  203  \n  ...\n  376  #\n  377  \n  378: metadata = Metadata.load!(META_ROOT, DOCS_ROOT, GUIDES_ROOT, PAGES_ROOT)\n  379  templates = Templates.new(ROOT_DIR, metadata)\n  380  root_erb_paths = erb_paths.select { |path| !templates.partial?(path) }\n\n/Users/benjohnson/Code/timber/vector-generate/targets/vector-website/scripts/keywords.rb:\n   46  #\n   47  \n   48: metadata = Metadata.load!(META_ROOT, DOCS_ROOT, GUIDES_ROOT, PAGES_ROOT)\n   49  \n   50  sources =\n\n/Users/benjohnson/Code/timber/vector-generate/targets/vector-website/scripts/setup.rb:\n   89  \n   90  VECTOR_ROOT = File.join(ROOT_DIR, \"vector\", \"v#{latest_version}\").freeze\n   91: META_ROOT = File.join(VECTOR_ROOT, \".meta\").freeze\n   92: RELEASE_META_DIR = \"#{META_ROOT}/releases\".freeze\n   93  \n   94  OPERATING_SYSTEMS = [\"Linux\", \"MacOS\", \"Windows\"].freeze\n\n/Users/benjohnson/Code/timber/vector-generate/targets/vector-website/scripts/util/metadata.rb:\n   33        end\n   34  \n   35:       full_path = path.start_with?(\"/\") ? path : \"#{META_ROOT}/#{path}\"\n   36  \n   37        if !File.exists?(full_path) && File.exists?(\"#{full_path}.erb\")\n\n25 matches across 16 files\n",
+			"settings":
+			{
+				"buffer_size": 5668,
+				"line_ending": "Unix",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "lib/metadata.rb",
+			"settings":
+			{
+				"buffer_size": 9597,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "lib/version.rb",
+			"settings":
+			{
+				"buffer_size": 724,
+				"encoding": "UTF-8",
+				"line_ending": "Unix",
+				"name": "version.rb"
+			}
+		},
+		{
+			"file": "lib/metadata/release.rb",
+			"settings":
+			{
+				"buffer_size": 5429,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "lib/printer.rb",
+			"settings":
+			{
+				"buffer_size": 1245,
+				"encoding": "UTF-8",
+				"line_ending": "Unix",
+				"name": "printer.rb"
+			}
+		},
+		{
+			"file": "lib/templates.rb",
+			"settings":
+			{
+				"buffer_size": 1277,
+				"encoding": "UTF-8",
+				"line_ending": "Unix",
+				"name": "templates.rb"
+			}
+		},
+		{
+			"file": "Gemfile",
+			"settings":
+			{
+				"buffer_size": 264,
+				"encoding": "UTF-8",
+				"line_ending": "Unix",
+				"name": "Gemfile"
+			}
+		},
+		{
+			"file": ".gitmodules",
+			"settings":
+			{
+				"buffer_size": 364,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": ".meta/vector/v0.10/.git",
+			"settings":
+			{
+				"buffer_size": 49,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"packagere",
+				"PackageResourceViewer: Open Resource"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"instl",
+				"Package Control: Install Package"
+			],
+			[
+				"packin",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/benjohnson/Code/timber/vector-generate",
+		"/Users/benjohnson/Code/timber/vector-generate/lib",
+		"/Users/benjohnson/Code/timber/vector-generate/templates"
+	],
+	"file_history":
+	[
+		"/Users/benjohnson/Code/timber/vector-management/README.md",
+		"/Users/benjohnson/Code/timber/vector-management/scripts/generate/metadata.rb",
+		"/Users/benjohnson/Code/timber/vector-management/scripts/generate2.rb",
+		"/Users/benjohnson/Code/timber/vector-management/scripts/generate2/template.rb",
+		"/Users/benjohnson/Code/timber/vector-management/.gitmodules",
+		"/Users/benjohnson/Code/timber/vector-management/generate/post_processors.rb",
+		"/Users/benjohnson/Code/timber/vector-management/generate/util.rb",
+		"/Users/benjohnson/Code/timber/vector-management/generate/generate.rb",
+		"/Users/benjohnson/Code/timber/vector-management/scripts/generate/templates.rb",
+		"/Users/benjohnson/Code/timber/vector-management/scripts/generate.rb",
+		"/Users/benjohnson/Code/timber/vector-management/vector-management.sublime-project",
+		"/Users/benjohnson/Code/timber/vector-management/.gitignore",
+		"/Users/benjohnson/Code/timber/vector-management/github/locals.tf",
+		"/Users/benjohnson/Code/timber/vector-management/scripts/generate/util.rb",
+		"/Users/benjohnson/Code/timber/vector-website/plugins/releases/releaseUtils.ts",
+		"/Users/benjohnson/Code/timber/vector-website/plugins/highlights/highlightUtils.ts",
+		"/Users/benjohnson/Code/timber/vector-website/plugins/guides/guideUtils.ts",
+		"/Users/benjohnson/Code/timber/vector-website/vector/v0.10/website/src/css/custom.css",
+		"/Users/benjohnson/Code/timber/vector-website/src/css/custom.css",
+		"/Users/benjohnson/Code/timber/vector-website/src/theme/Tabs/index.js",
+		"/Users/benjohnson/Code/timber/vector-website/vector/v0.10/website/src/theme/PagePaginator/index.js",
+		"/Users/benjohnson/Code/timber/vector-website/src/theme/PagePaginator/index.js",
+		"/Users/benjohnson/Code/timber/vector-website/vector/v0.10/src/transforms/reduce/merge_strategy.rs",
+		"/Users/benjohnson/Code/timber/vector-website/package.json",
+		"/Users/benjohnson/Code/timber/vector-website/docusaurus.config.js",
+		"/Users/benjohnson/Code/timber/vector-website/scripts/generate/post_processors/front_matter_validator.rb",
+		"/Users/benjohnson/Code/timber/vector-website/scripts/generate/templates.rb",
+		"/Users/benjohnson/Code/timber/vector-website/scripts/generate/templates/_partials/_integration_guide.md.erb",
+		"/Users/benjohnson/Code/timber/vector-website/guides/advanced/merge-multiline-logs-with-lua.md",
+		"/Users/benjohnson/Code/timber/vector-website/scripts/util/json_schema.rb",
+		"/Users/benjohnson/Code/timber/vector-website/highlights/.schema.json.erb",
+		"/Users/benjohnson/Code/timber/vector-website/guides/.schema.json.erb",
+		"/Users/benjohnson/Code/timber/vector-website/guides/advanced/managing-complex-configs.md",
+		"/Users/benjohnson/Code/timber/vector-website/scripts/util/version.rb",
+		"/Users/benjohnson/Code/timber/vector-website/docs/setup/installation/operating-systems/amazon-linux.md",
+		"/Users/benjohnson/Code/timber/vector-website/metadata.js",
+		"/Users/benjohnson/Code/timber/vector-website/scripts/generate.rb",
+		"/Users/benjohnson/Code/timber/vector-website/docs/reference/sinks/socket.md.erb",
+		"/Users/benjohnson/Code/timber/vector-website/vector/.meta/sinks/socket.toml.erb",
+		"/Users/benjohnson/Code/timber/vector-website/docs/reference/sinks/socket.md",
+		"/Users/benjohnson/Code/timber/vector-website/scripts/util/metadata/release.rb",
+		"/Users/benjohnson/Code/timber/vector-website/highlights/.schema.json",
+		"/Users/benjohnson/Code/timber/vector-website/vector/distribution/nix/default.nix.erb",
+		"/Users/benjohnson/Code/timber/vector-website/vector/.gitattributes",
+		"/Users/benjohnson/Code/timber/vector-website/scripts/generate/post_processors/link_definer.rb",
+		"/Users/benjohnson/Code/timber/vector-website/vector/README.md",
+		"/Users/benjohnson/Code/timber/vector-website/scripts/setup.rb",
+		"/Users/benjohnson/Code/timber/vector-website/highlights/2020-07-06-add-compression-option-for-aws-sinks.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/platforms/docker.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/platforms/docker/aws_cloudwatch_logs.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/platforms/docker/aws_kinesis_firehose.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/platforms/docker/aws_kinesis_streams.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/platforms/docker/aws_s3.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/platforms/docker/clickhouse.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/platforms/docker/elasticsearch.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/platforms/docker/file.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/platforms/docker/gcp_pubsub.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/platforms/docker/gcp_stackdriver_logs.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/platforms/docker/humio_logs.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/platforms/docker/influxdb_logs.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/platforms/docker/kafka.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/platforms/docker/logdna.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/platforms/docker/loki.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/platforms/docker/new_relic_logs.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/platforms/docker/papertrail.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/platforms/docker/pulsar.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/platforms/docker/sematext_logs.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/platforms/docker/socket.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/platforms/docker/splunk_hec.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/aws_cloudwatch_logs.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/aws_cloudwatch_metrics.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/aws_kinesis_firehose.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/aws_kinesis_streams.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/clickhouse.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/datadog_metrics.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/elasticsearch.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/gcp_cloud_storage.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/gcp_pubsub.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/gcp_stackdriver_logs.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/honeycomb.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/http.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/humio_logs.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/influxdb_logs.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/influxdb_metrics.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/kafka.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/logdna.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/loki.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/new_relic_logs.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/papertrail.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/prometheus.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/pulsar.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/sematext_logs.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/socket.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sinks/splunk_hec.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/file.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/file/aws_kinesis_streams.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/file/aws_s3.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/file/clickhouse.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/file/datadog_logs.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/file/file.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/file/gcp_cloud_storage.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/file/gcp_pubsub.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/file/gcp_stackdriver_logs.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/file/honeycomb.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/file/http.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/file/influxdb_logs.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/file/kafka.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/file/loki.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/file/pulsar.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/file/sematext_logs.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/file/socket.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/file/splunk_hec.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/file/vector.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/http/aws_cloudwatch_logs.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/http/aws_kinesis_firehose.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/http/aws_kinesis_streams.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/http/aws_s3.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/http/clickhouse.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/http/datadog_logs.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/http/elasticsearch.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/http/file.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/http/gcp_pubsub.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/http/gcp_stackdriver_logs.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/http/humio_logs.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/http/influxdb_logs.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/http/kafka.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/http/logdna.md",
+		"/Users/benjohnson/Code/timber/vector-website/guides/integrate/sources/http/loki.md"
+	],
+	"find":
+	{
+		"height": 54.0
+	},
+	"find_in_files":
+	{
+		"height": 134.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"META_ROOT",
+			"docs_root"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "main.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 436,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								296,
+								296
+							]
+						],
+						"settings":
+						{
+							"auto_name": "main.rb",
+							"syntax": "Packages/Ruby/Ruby.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5668,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										174,
+										183
+									],
+									[
+										416,
+										425
+									],
+									[
+										453,
+										462
+									],
+									[
+										683,
+										692
+									],
+									[
+										998,
+										1007
+									],
+									[
+										1213,
+										1222
+									],
+									[
+										1452,
+										1461
+									],
+									[
+										1713,
+										1722
+									],
+									[
+										2067,
+										2076
+									],
+									[
+										2431,
+										2440
+									],
+									[
+										2684,
+										2693
+									],
+									[
+										2913,
+										2922
+									],
+									[
+										3054,
+										3063
+									],
+									[
+										3212,
+										3221
+									],
+									[
+										3294,
+										3303
+									],
+									[
+										3527,
+										3536
+									],
+									[
+										3762,
+										3771
+									],
+									[
+										4019,
+										4028
+									],
+									[
+										4289,
+										4298
+									],
+									[
+										4437,
+										4446
+									],
+									[
+										4601,
+										4610
+									],
+									[
+										4920,
+										4929
+									],
+									[
+										5175,
+										5184
+									],
+									[
+										5255,
+										5264
+									],
+									[
+										5535,
+										5544
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 1,
+							"result_base_dir": "",
+							"result_file_regex": "^([^ \t].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1439.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "lib/metadata.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9597,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								566,
+								566
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "lib/version.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 724,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								724,
+								724
+							]
+						],
+						"settings":
+						{
+							"auto_name": "version.rb",
+							"syntax": "Packages/Ruby/Ruby.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "lib/metadata/release.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5429,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								46,
+								46
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"default_dir": "/Users/benjohnson/Code/timber/vector-generate/lib",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "lib/printer.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1245,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1245,
+								1245
+							]
+						],
+						"settings":
+						{
+							"auto_name": "printer.rb",
+							"syntax": "Packages/Ruby/Ruby.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 282.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "lib/templates.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1277,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								821,
+								827
+							]
+						],
+						"settings":
+						{
+							"auto_name": "templates.rb",
+							"syntax": "Packages/Ruby/Ruby.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "Gemfile",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 264,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								218,
+								226
+							]
+						],
+						"settings":
+						{
+							"auto_name": "Gemfile",
+							"syntax": "Packages/Ruby/Ruby.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": ".gitmodules",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 364,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								245,
+								245
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Git Formats/Git Config.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": ".meta/vector/v0.10/.git",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 49,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								42,
+								42
+							]
+						],
+						"settings":
+						{
+							"editorconfig": true,
+							"syntax": "Packages/Git Formats/Git Link.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 28.0
+	},
+	"input":
+	{
+		"height": 38.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.doc":
+	{
+		"height": 0.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "vector-generate.sublime-project",
+	"replace":
+	{
+		"height": 52.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"lib/metadata/release.rb"
+			],
+			[
+				"release",
+				"lib/metadata/release.rb"
+			],
+			[
+				"remad",
+				"README.md"
+			],
+			[
+				"template",
+				"scripts/generate/templates.rb"
+			],
+			[
+				"templates",
+				"scripts/generate/templates.rb"
+			],
+			[
+				"metad",
+				"scripts/generate/metadata.rb"
+			],
+			[
+				"generate",
+				"scripts/generate.rb"
+			],
+			[
+				"meta",
+				"scripts/generate/metadata.rb"
+			],
+			[
+				"package",
+				"package.json"
+			],
+			[
+				"version.",
+				"scripts/util/version.rb"
+			],
+			[
+				"setup",
+				"scripts/setup.rb"
+			],
+			[
+				"socket.",
+				"docs/reference/sinks/socket.md"
+			],
+			[
+				"socket.md",
+				"docs/reference/sinks/socket.md"
+			],
+			[
+				"socket.tom",
+				"vector/.meta/sinks/socket.toml.erb"
+			],
+			[
+				"socketmder",
+				"docs/reference/sinks/socket.md.erb"
+			],
+			[
+				"link def",
+				"scripts/generate/post_processors/link_definer.rb"
+			],
+			[
+				"default.nix.erb",
+				"vector/distribution/nix/default.nix.erb"
+			],
+			[
+				"manging com",
+				"guides/advanced/managing-complex-configs.md"
+			],
+			[
+				"_integrat",
+				"scripts/generate/templates/_partials/_integration_guide.md.erb"
+			],
+			[
+				"frontmat",
+				"scripts/generate/post_processors/front_matter_validator.rb"
+			],
+			[
+				"jsonsc",
+				"scripts/util/json_schema.rb"
+			],
+			[
+				"tempalte.rb",
+				"scripts/generate/templates.rb"
+			],
+			[
+				"make",
+				"Makefile"
+			],
+			[
+				"check-compon",
+				"scripts/check-component-features.sh"
+			],
+			[
+				"check-st",
+				"scripts/check-style.sh"
+			],
+			[
+				"check-fmt",
+				"scripts/ci-docker-images/checker-component-features/Dockerfile"
+			],
+			[
+				"fieldindex.",
+				"website/src/components/Field/index.js"
+			],
+			[
+				"lua.mder",
+				"website/docs/reference/transforms/lua.md.erb"
+			],
+			[
+				"loki.tom",
+				".meta/sinks/loki.toml"
+			],
+			[
+				"config exam",
+				"scripts/util/metadata/config_writers/example_writer.rb"
+			],
+			[
+				"lua.toml",
+				".meta/transforms/lua.toml"
+			],
+			[
+				"configwrite",
+				"scripts/util/metadata/config_writers.rb"
+			],
+			[
+				"sinkafka.r",
+				"src/sinks/kafka.rs"
+			],
+			[
+				"highlight encoding.md",
+				"website/highlights/2020-03-04-encoding-only-fields-except-fields.md"
+			],
+			[
+				"highlightcardina.md",
+				"website/highlights/2020-03-11-tag-cardinality-limit-transform.md"
+			],
+			[
+				"custom",
+				"website/src/css/custom.css"
+			],
+			[
+				"highlighitemsinde",
+				"website/src/theme/HighlightItems/index.js"
+			],
+			[
+				"highlightpageinde",
+				"website/src/theme/HighlightPage/index.js"
+			],
+			[
+				"pageinde",
+				"website/src/pages/index.js"
+			],
+			[
+				"inmod",
+				"website/src/pages/index.module.css"
+			],
+			[
+				"buildod",
+				"scripts/build-docker.sh"
+			],
+			[
+				"release do",
+				"scripts/release-docker.sh"
+			],
+			[
+				"metadat",
+				"scripts/util/metadata.rb"
+			],
+			[
+				"ma",
+				"Makefile"
+			],
+			[
+				"release com",
+				"scripts/release-commit.rb"
+			],
+			[
+				"release-cha",
+				"scripts/util/release-channel.sh"
+			],
+			[
+				"version",
+				"scripts/version.sh"
+			],
+			[
+				"releasepus",
+				"scripts/release-push.rb"
+			],
+			[
+				"release push",
+				"scripts/release-push.sh"
+			],
+			[
+				"relecomm",
+				"scripts/release-commit.rb"
+			],
+			[
+				"release-pus",
+				"scripts/release-push.sh"
+			],
+			[
+				"makef",
+				"Makefile"
+			],
+			[
+				"cargo",
+				"Cargo.toml"
+			],
+			[
+				"circlconf",
+				".circleci/config.yml"
+			],
+			[
+				"0.9.0",
+				".meta/releases/0.9.0.toml"
+			],
+			[
+				"overall",
+				"website/highlights/2020-04-11-overall-performance-increase.md"
+			],
+			[
+				"seman",
+				".github/semantic.yml"
+			],
+			[
+				"guide.r",
+				"scripts/util/metadata/guide.rb"
+			],
+			[
+				"highlightperform.md",
+				"website/highlights/2020-04-11-overall-performance-increase.md"
+			],
+			[
+				"musl docker",
+				"scripts/ci-docker-images/builder-aarch64-unknown-linux-musl/Dockerfile"
+			],
+			[
+				"releasech",
+				"scripts/util/release-channel.sh"
+			],
+			[
+				"release s3",
+				"scripts/release-s3.sh"
+			],
+			[
+				"reles3",
+				"scripts/release-s3.sh"
+			],
+			[
+				"release ch",
+				"scripts/util/release-channel.sh"
+			],
+			[
+				"srversion",
+				"scripts/version.sh"
+			],
+			[
+				"releases3",
+				"scripts/release-s3.sh"
+			],
+			[
+				"circlcon",
+				".circleci/config.yml"
+			],
+			[
+				"nightly",
+				".github/workflows/nightly.yml"
+			],
+			[
+				"kubernetes_pod_metadata.md.erb",
+				"website/docs/reference/transforms/kubernetes_pod_metadata.md.erb"
+			],
+			[
+				"highlightkuber.md",
+				"website/highlights/2020-04-01-kubernetes-pod-metadata-transform.md"
+			],
+			[
+				"kubernete",
+				".meta/transforms/kubernetes_pod_metadata.toml"
+			],
+			[
+				"unittestmd",
+				"website/guides/advanced/unit-testing.md.erb"
+			],
+			[
+				"assu",
+				"website/src/components/Assumptions/index.js"
+			],
+			[
+				"advalua.m",
+				"website/guides/advanced/custom-aggregations-with-lua.md.erb"
+			],
+			[
+				"manage com",
+				"website/guides/advanced/managing-complex-configs.md.erb"
+			],
+			[
+				"alert inde",
+				"website/src/components/Alert/index.js"
+			],
+			[
+				"alert st",
+				"website/src/components/Alert/styles.css"
+			],
+			[
+				"assum",
+				"website/src/components/Assumptions/index.js"
+			],
+			[
+				"rleasepageind",
+				"website/src/theme/ReleasePage/index.js"
+			],
+			[
+				"alertind",
+				"website/src/components/Alert/index.js"
+			],
+			[
+				"assump",
+				"website/src/components/Assumptions/index.js"
+			],
+			[
+				"releas-s3",
+				"scripts/release-s3.sh"
+			],
+			[
+				"assumpind",
+				"website/src/components/Assumptions/index.js"
+			],
+			[
+				"alertstyle",
+				"website/src/components/Alert/styles.css"
+			],
+			[
+				"alert ind",
+				"website/src/components/Alert/index.js"
+			],
+			[
+				"import",
+				"scripts/generate/post_processors/component_importer.rb"
+			],
+			[
+				"guidpageind",
+				"website/src/theme/GuidePage/index.js"
+			],
+			[
+				"merge mul ",
+				"website/guides/advanced/merge-multiline-logs-with-lua.md.erb"
+			],
+			[
+				"guide merge mu.md",
+				"website/guides/advanced/merge-multiline-logs-with-lua.md"
+			],
+			[
+				"guidepageinde",
+				"website/src/theme/GuidePage/index.js"
+			],
+			[
+				"cus",
+				"website/src/css/custom.css"
+			],
+			[
+				"guidepageind",
+				"website/src/theme/GuidePage/index.js"
+			],
+			[
+				"guide merge lua",
+				"website/guides/advanced/merge-multiline-logs-with-lua.md"
+			],
+			[
+				"downtom",
+				".meta/installation/downloads.toml"
+			],
+			[
+				"release-s3",
+				"scripts/release-s3.sh"
+			],
+			[
+				"makefi",
+				"Makefile"
+			],
+			[
+				"build-co",
+				"scripts/build-docker.sh"
+			],
+			[
+				"release-docker",
+				"scripts/release-docker.sh"
+			],
+			[
+				"interindpk",
+				"scripts/generate/templates/_partials/interface_installation_tutorial/_dpkg.md.erb"
+			],
+			[
+				"integguid.",
+				"scripts/generate/templates/_partials/_integration_guide.md.erb"
+			],
+			[
+				"compon",
+				"scripts/util/metadata/component.rb"
+			],
+			[
+				"sink",
+				"scripts/util/metadata/sink.rb"
+			],
+			[
+				"integrtiongu",
+				"scripts/generate/templates/_partials/_integration_guide.md.erb"
+			],
+			[
+				"guidesclickhousemder",
+				"website/guides/integrate/sinks/clickhouse.md.erb"
+			],
+			[
+				"clickhousemder",
+				"website/docs/reference/sinks/clickhouse.md.erb"
+			],
+			[
+				"guidesclickhou.md",
+				"website/guides/integrate/sinks/clickhouse.md"
+			],
+			[
+				"generattoml",
+				".meta/sources/generator.toml"
+			],
+			[
+				"scriptgener",
+				"scripts/generate.rb"
+			],
+			[
+				"highlightlua.md",
+				"website/highlights/2020-04-07-lua-transform-version-2.md.erb"
+			],
+			[
+				"rfc kub",
+				"rfcs/2020-04-04-2221-kubernetes-integration.md"
+			],
+			[
+				"0.9.",
+				".meta/releases/0.9.0.toml"
+			],
+			[
+				"cargo.tom",
+				"Cargo.toml"
+			],
+			[
+				"links",
+				".meta/links.toml"
+			],
+			[
+				"whatne",
+				"scripts/generate/templates/_partials/_release_whats_next.md.erb"
+			],
+			[
+				"generat",
+				"scripts/generate.rb"
+			],
+			[
+				"0.9.0mder",
+				"website/releases/0.9.0.md.erb"
+			],
+			[
+				"release page inde",
+				"website/src/theme/ReleasePage/index.js"
+			],
+			[
+				"fields.md",
+				"scripts/generate/templates/_partials/_fields.md.erb"
+			],
+			[
+				"0.8.0.md",
+				"website/releases/0.8.0.md.erb"
+			],
+			[
+				"release.r",
+				"scripts/util/metadata/release.rb"
+			],
+			[
+				"highencoding.md",
+				"website/highlights/2020-03-04-encoding-whitelist-blacklist.md"
+			],
+			[
+				"release.",
+				"scripts/util/metadata/release.rb"
+			],
+			[
+				"relea head",
+				"scripts/generate/templates/_partials/_release_header.md.erb"
+			],
+			[
+				"netlify",
+				"website/netlify.toml"
+			],
+			[
+				"releasepageind",
+				"website/src/theme/ReleasePage/index.js"
+			],
+			[
+				"chagnelogind",
+				"website/src/components/Changelog/index.js"
+			],
+			[
+				"luav2.md",
+				"website/highlights/2020-04-07-lua-transform-version-2.md"
+			],
+			[
+				"changeloginde",
+				"website/src/components/Changelog/index.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 314.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

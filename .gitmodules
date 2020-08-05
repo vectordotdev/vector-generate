@@ -6,3 +6,11 @@
 	path = targets/vector
 	url = https://github.com/timberio/vector
 	branch = master
+[submodule ".meta/vector/v0.10"]
+	path = .meta/vector/v0.10
+	url = https://github.com/timberio/vector
+	branch = v0.10
+[submodule ".meta/vector/master"]
+	path = .meta/vector/master
+	url = https://github.com/timberio/vector
+	branch = master

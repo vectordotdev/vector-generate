@@ -1,0 +1,13 @@
+{
+	"folders":
+	[
+		{
+			"path": ".",
+			"binary_file_patterns":
+			[
+				".meta/vector/*",
+				"targets/*"
+			]
+		}
+	],
+}

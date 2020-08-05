@@ -1,5 +1,3 @@
-require 'front_matter_parser'
-
 class Guide
   include Comparable
 
@@ -7,19 +5,18 @@ class Guide
     :description,
     :id,
     :last_modified_on,
-    :path,
+    :permalink,
     :series_position,
     :title
 
-  def initialize(path)
-    parsed = FrontMatterParser::Parser.parse_file(path)
-    front_matter = parsed.front_matter
-
-    @author_github = front_matter["author_github"]
-    @id = path.sub(GUIDES_ROOT, '').sub(/\.md$/, "")
-    @path = Pathname.new(path).relative_path_from(ROOT_DIR).to_s
-    @permalink = "#{GUIDES_BASE_PATH}/#{@id}/"
-    @title = front_matter.fetch("title")
+  def initialize(hash)
+    @author_github = hash.fetch("author_github")
+    @description = hash.fetch("description")
+    @id = hash.fetch("id")
+    @last_modified_on = hash["last_modified_on"]
+    @permalink = hash.fetch("permalink")
+    @series_position = hash["series_position"]
+    @title = hash.fetch("title")
   end
 
   def <=>(other)
@@ -36,7 +33,6 @@ class Guide
       description: description,
       id: id,
       last_modified_on: last_modified_on,
-      path: path,
       series_position: series_position,
       title: title
     }

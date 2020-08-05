@@ -14,6 +14,7 @@ require_relative "metadata/post"
 require_relative "metadata/release"
 require_relative "metadata/source"
 require_relative "metadata/streaming_sink"
+require_relative "metadata/template_context"
 require_relative "metadata/transform"
 require_relative "printer"
 
@@ -22,85 +23,6 @@ require_relative "printer"
 # This represents the /.meta directory in object form. Sub-classes represent
 # each sub-component.
 class Metadata
-  module Template
-    extend self
-
-    def render(path, args = {})
-      context = binding
-
-      args.each do |key, value|
-        context.local_variable_set("#{key}", value)
-      end
-
-      full_path = path.start_with?("/") ? path : "#{META_ROOT}/#{path}"
-
-      if !File.exists?(full_path) && File.exists?("#{full_path}.erb")
-        full_path = "#{full_path}.erb"
-      end
-
-      body = File.read(full_path)
-      renderer = ERB.new(body, nil, '-')
-
-      renderer.result(context)
-    end
-  end
-
-  class << self
-    def load!(meta_dir, docs_root, guides_root, pages_root)
-      metadata = load_metadata!(meta_dir)
-      errors = metadata.validate_schema(meta_dir)
-
-      if errors.any?
-        Printer.error!(
-          <<~EOF
-          The resulting hash from the `/.meta/**/*.toml` files failed
-          validation against the following schema:
-
-              ${metadata.fetch("$schema")}
-
-          The errors include:
-
-              * #{errors[0..50].join("\n*    ")}
-          EOF
-        )
-      end
-
-      new(metadata, docs_root, guides_root, pages_root)
-    end
-
-    private
-      def load_metadata!(meta_dir)
-        metadata = {}
-
-        contents =
-          Dir.glob("#{meta_dir}/**/[^_]*.{toml,toml.erb}").
-            sort.
-            unshift("#{meta_dir}/root.toml"). # move to the front
-            uniq.
-            collect do |file|
-              begin
-                Template.render(file)
-              rescue Exception => e
-                Printer.error!(
-                  <<~EOF
-                  The follow metadata file failed to load:
-
-                    #{file}
-
-                  The error received was:
-
-                    #{e.message}
-                    #{e.backtrace.join("\n  ")}
-                  EOF
-                )
-              end
-            end
-
-        content = contents.join("\n")
-        TomlRB.parse(content)
-      end
-  end
-
   attr_reader :blog_posts,
     :data_model,
     :domains,
@@ -118,61 +40,31 @@ class Metadata
     :team,
     :transforms
 
-  def initialize(hash, docs_root, guides_root, pages_root)
-    @data_model = DataModel.new(hash.fetch("data_model"))
-    @guides = hash.fetch("guides").to_struct_with_name(constructor: Guides)
-    @installation = Installation.new(hash.fetch("installation"))
-    @options = hash.fetch("options").to_struct_with_name(constructor: Field)
+  def initialize(global_meta, vector_meta, guides, highlights, posts, permalinks)
+    @data_model = DataModel.new(vector_meta.fetch("data_model"))
+    @domains = global_meta.fetch("domains").collect { |h| OpenStruct.new(h) }
+    @guides = guides.to_struct_with_name(constructor: Guides)
+    @highlights ||= highlights.collect { |hash| Highlight.new(hash) }
+    @installation = Installation.new(vector_meta.fetch("installation"))
+    @options = vector_meta.fetch("options").to_struct_with_name(constructor: Field)
+    @posts ||= highlights.collect { |hash| Post.new(hash) }
     @releases = OpenStruct.new()
     @sinks = OpenStruct.new()
     @sources = OpenStruct.new()
     @transforms = OpenStruct.new()
-    @tests = Field.new(hash.fetch("tests").merge({"name" => "tests"}))
+    @tests = Field.new(vector_meta.fetch("tests").merge({"name" => "tests"}))
 
     # domains
 
-    @domains = hash.fetch("domains").collect { |h| OpenStruct.new(h) }
-
-    # highlights
-
-    @highlights ||=
-      Dir.
-        glob("#{HIGHLIGHTS_ROOT}/**/*.md").
-        filter do |path|
-          content = File.read(path)
-          content.start_with?("---\n")
-        end.
-        collect do |path|
-          Highlight.new(path)
-        end.
-        sort_by do |highlight|
-          [ highlight.date, highlight.id ]
-        end
-
-    # posts
-
-    @posts ||=
-      Dir.
-        glob("#{POSTS_ROOT}/**/*.md").
-        filter do |path|
-          content = File.read(path)
-          content.start_with?("---\n")
-        end.
-        collect do |path|
-          Post.new(path)
-        end.
-        sort_by do |post|
-          [ post.date, post.id ]
-        end
 
     # releases
 
     release_versions =
-      hash.fetch("releases").collect do |version_string, _release_hash|
+      vector_meta.fetch("releases").collect do |version_string, _release_hash|
         Version.new(version_string)
       end
 
-    hash.fetch("releases").collect do |version_string, release_hash|
+    vector_meta.fetch("releases").collect do |version_string, release_hash|
       version = Version.new(version_string)
 
       last_version =
@@ -188,7 +80,7 @@ class Metadata
 
     # sources
 
-    hash["sources"].collect do |source_name, source_hash|
+    vector_meta.fetch("sources").collect do |source_name, source_hash|
       source_hash["name"] = source_name
       source_hash["posts"] = posts.select { |post| post.source?(source_name) }
       source = Source.new(source_hash)
@@ -197,7 +89,7 @@ class Metadata
 
     # transforms
 
-    hash["transforms"].collect do |transform_name, transform_hash|
+    vector_meta.fetch("transforms").collect do |transform_name, transform_hash|
       transform_hash["name"] = transform_name
       transform_hash["posts"] = posts.select { |post| post.transform?(transform_name) }
       transform = Transform.new(transform_hash)
@@ -206,12 +98,12 @@ class Metadata
 
     # sinks
 
-    hash["sinks"].collect do |sink_name, sink_hash|
+    vector_meta.fetch("sinks").collect do |sink_name, sink_hash|
       sink_hash["name"] = sink_name
       sink_hash["posts"] = posts.select { |post| post.sink?(sink_name) }
 
       (sink_hash["service_providers"] || []).each do |service_provider|
-        provider_hash = (hash["service_providers"] || {})[service_provider.downcase] || {}
+        provider_hash = (vector_meta["service_providers"] || {})[service_provider.downcase] || {}
         sink_hash["env_vars"] = (sink_hash["env_vars"] || {}).merge((provider_hash["env_vars"] || {}).clone)
         sink_hash["options"] = sink_hash["options"].merge((provider_hash["options"] || {}).clone)
       end
@@ -231,11 +123,11 @@ class Metadata
 
     # links
 
-    @links = Links.new(hash.fetch("links"), docs_root, guides_root, pages_root)
+    @links = Links.new(vector_meta.fetch("links"), permalinks)
 
     # env vars
 
-    @env_vars = (hash["env_vars"] || {}).to_struct_with_name(constructor: Field)
+    @env_vars = (vector_meta.fetch("env_vars") || {}).to_struct_with_name(constructor: Field)
 
     components.each do |component|
       component.env_vars.to_h.each do |key, val|
@@ -246,7 +138,7 @@ class Metadata
     # team
 
     @team =
-      hash.fetch("team").collect do |member|
+      vector_meta.fetch("team").collect do |member|
         OpenStruct.new(member)
       end
   end

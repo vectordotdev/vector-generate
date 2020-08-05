@@ -1,27 +1,56 @@
+require_relative "templates/component_helpers"
+require_relative "templates/config_helpers"
+require_relative "templates/event_helpers"
+require_relative "templates/fields_helpers"
+require_relative "templates/guide_helpers"
+require_relative "templates/highlight_helpers"
+require_relative "templates/installation_helpers"
+require_relative "templates/interface_helpers"
+require_relative "templates/option_helpers"
+require_relative "templates/release_helpers"
+require_relative "templates/util_helpers"
+
 class Templates
-	attr_reader :metadata, :root_dir
-	
-	def initialize(root_dir, metadata)
-    @root_dir = root_dir
-    @partials_path = "scripts/generate/templates/_partials"
+	include ComponentHelpers
+	include ConfigHelpers
+	include EventHelpers
+	include FieldsHelpers
+	include GuideHelpers
+	include HighlightHelpers
+	include InstallationHelpers
+	include InterfaceHelpers
+	include OptionHelpers
+	include ReleaseHelpers
+	include UtilHelpers
+
+	attr_reader :metadata, :partials_path
+
+	def initialize(metadata)
+    @partials_path = "templates/_partials"
     @metadata = metadata
+  end
+
+  def partial?(template_path)
+    basename = File.basename(template_path)
+    basename.start_with?("_")
   end
 
 	def render(template_path, template_binding=nil)
 		old_template_path = @_template_path
     template_binding = binding if template_binding.nil?
-    content = File.read("#{root_dir}/#{template_path}.erb")
+    template_path = template_path.end_with?(".erb") ? template_path : "#{template_path}.erb"
+    content = File.read(template_path)
     renderer = ERB.new(content, nil, '-')
     content =
       begin
-        @_template_path = "#{root_dir}/#{template_path}"
+        @_template_path = template_path
         renderer.result(template_binding)
       rescue Exception => e
         raise(
           <<~EOF
           Error rendering template!
 
-            #{root_dir.gsub(/#{ROOT_DIR}/, "")}/#{template_path}.erb
+            #{template_path}
 
           Error:
 

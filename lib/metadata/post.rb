@@ -1,5 +1,3 @@
-require 'front_matter_parser'
-
 class Post
   include Comparable
 
@@ -12,21 +10,14 @@ class Post
     :tags,
     :title
 
-  def initialize(path)
-    path_parts = path.split("-", 3)
-
-    @date = Date.parse("#{path_parts.fetch(0)}-#{path_parts.fetch(1)}-#{path_parts.fetch(2)}")
-    @path = Pathname.new(path).relative_path_from(ROOT_DIR).to_s
-
-    parsed = FrontMatterParser::Parser.parse_file(path)
-    front_matter = parsed.front_matter
-
-    @author_github = front_matter.fetch("author_github")
-    @description = parsed.content.split("\n\n").first.remove_markdown_links
-    @id = front_matter.fetch("id")
-    @permalink = "#{POSTS_BASE_PATH}/#{id}/"
-    @tags = front_matter.fetch("tags")
-    @title = front_matter.fetch("title")
+  def initialize(hash)
+    @author_github = hash.fetch("author_github")
+    @date = Date.parse(hash.fetch("date"))
+    @description = hash.fetch("description")
+    @id = hash.fetch("id")
+    @permalink = hash.fetch("permalink")
+    @tags = hash.fetch("tags")
+    @title = hash.fetch("title")
   end
 
   def <=>(other)

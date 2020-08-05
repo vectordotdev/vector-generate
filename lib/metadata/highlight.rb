@@ -1,5 +1,3 @@
-require 'front_matter_parser'
-
 class Highlight
   include Comparable
 
@@ -15,28 +13,21 @@ class Highlight
     :tags,
     :title
 
-  def initialize(path)
-    path_parts = File.basename(path).split("-", 4)
-
-    @date = Date.parse("#{path_parts.fetch(0)}-#{path_parts.fetch(1)}-#{path_parts.fetch(2)}")
-    @path = Pathname.new(path).relative_path_from(ROOT_DIR).to_s
-
-    parsed = FrontMatterParser::Parser.parse_file(path)
-    front_matter = parsed.front_matter
-
-    @author_github = front_matter.fetch("author_github")
-    @description = front_matter.fetch("description")
-    @hide_on_release_notes = front_matter.fetch("hide_on_release_notes")
-    @id = front_matter["id"] || @path.split("/").last.gsub(/\.md$/, '')
-    @permalink = "#{HIGHLIGHTS_BASE_PATH}/#{id}/"
-    @pr_numbers = front_matter.fetch("pr_numbers")
-    @release = front_matter.fetch("release")
-    @tags = front_matter.fetch("tags")
-    @title = front_matter.fetch("title")
+  def initialize(hash)
+    @author_github = hash.fetch("author_github")
+    @date = Date.parse(hash.fetch("date"))
+    @description = hash.fetch("description")
+    @hide_on_release_notes = hash.fetch("hide_on_release_notes")
+    @id = hash.fetch("id")
+    @permalink = hash.fetch("permalink")
+    @pr_numbers = hash.fetch("pr_numbers")
+    @release = hash.fetch("release")
+    @tags = hash.fetch("tags")
+    @title = hash.fetch("title")
 
     # Requirements
 
-    if breaking_change? && !File.read(path).include?("## Upgrade Guide")
+    if breaking_change? && !hash.fetch("content").include?("## Upgrade Guide")
       raise Exception.new(
         <<~EOF
         The following "breaking change" highlight does not have an "Upgrade

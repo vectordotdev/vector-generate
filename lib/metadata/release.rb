@@ -20,7 +20,7 @@ class Release
     @date = release_hash.fetch("date").to_date
     @last_version = last_version
     @version = Version.new(release_hash.fetch("version"))
-    @permalink = "#{RELEASES_BASE_PATH}/#{@version}/"
+    @permalink = "/releases/#{@version}/"
     @whats_next = (release_hash["whats_next"] || []).collect(&:to_struct)
 
     # highlights
