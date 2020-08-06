@@ -16,7 +16,7 @@ require_relative "metadata/source"
 require_relative "metadata/streaming_sink"
 require_relative "metadata/template_context"
 require_relative "metadata/transform"
-require_relative "printer"
+require_relative "version"
 
 # Object representation of the /.meta directory
 #

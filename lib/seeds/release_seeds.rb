@@ -1,5 +1,7 @@
 module Seeds
 	module ReleaseSeeds
+		extend self
+
 		def seed_releases!(metadata, releases_dir)
 			metadata.releases_list.each do |release|
 			  template_path = "#{releases_dir}/#{release.version}.md.erb"

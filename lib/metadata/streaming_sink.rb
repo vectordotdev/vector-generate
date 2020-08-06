@@ -2,5 +2,7 @@
 
 require_relative "sink"
 
-class StreamingSink < Sink
+class Metadata
+	class StreamingSink < Sink
+	end
 end

@@ -1,4 +1,5 @@
 require_relative "seeds/guide_seeds"
+require_relative "seeds/release_seeds"
 
 module Seeds
 	extend self

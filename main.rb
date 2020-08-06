@@ -16,11 +16,13 @@ require "active_support/core_ext/string/conversions"
 require "active_support/core_ext/string/filters"
 require "active_support/core_ext/string/indent"
 
+require_relative "lib/config_writers"
 require_relative "lib/core_ext"
 require_relative "lib/data_loaders"
 require_relative "lib/json_schema"
 require_relative "lib/metadata"
 require_relative "lib/post_processors"
+require_relative "lib/printer"
 require_relative "lib/seeds"
 require_relative "lib/templates"
 
@@ -42,6 +44,13 @@ VECTOR_WEBSITE_TARGET_DIR = File.join(ROOT_DIR, "targets", "vector-website")
 VECTOR_WEBSITE_GUIDES_DIR = File.join(VECTOR_WEBSITE_TARGET_DIR, "guides")
 VECTOR_WEBSITE_RELEASES_DIR = File.join(VECTOR_WEBSITE_TARGET_DIR, "releases")
 VECTOR_WEBSITE_STATIC_DIR = File.join(VECTOR_WEBSITE_TARGET_DIR, "static")
+
+#
+# Flags
+#
+
+target = ARGV.include?("--target")
+
 
 #
 # Functions
@@ -66,12 +75,13 @@ def render_templates(metadata, target_dir, relative_link_paths)
 		  content = PostProcessors::SectionReferencer.reference!(content)
 		  content = PostProcessors::OptionLinker.link!(content)
 		  content = PostProcessors::LinkDefiner.define!(content, metadata.links, relative_link_paths)
-		  content = PostProcessors::AutogenerateLabeler.label!(content, template)
 		  # must be last
 		  content = PostProcessors::LastModifiedSetter.set!(content, template)
 
 		  # PostProcessors::FrontMatterValidator.validate!(content, template)
 		end
+
+		 content = PostProcessors::AutogenerateLabeler.label!(content, template)
 
 		File.write(template.gsub(/\.erb$/, ""), content)
 

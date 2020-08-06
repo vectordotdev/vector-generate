@@ -2,8 +2,10 @@
 
 require_relative "sink"
 
-class BatchingSink < Sink
-  def initialize(hash)
-    super(hash)
-  end
+class Metadata
+	class BatchingSink < Sink
+	  def initialize(hash)
+	    super(hash)
+	  end
+	end
 end

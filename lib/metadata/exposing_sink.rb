@@ -2,5 +2,7 @@
 
 require_relative "sink"
 
-class ExposingSink < Sink
+class Metadata
+	class ExposingSink < Sink
+	end
 end
