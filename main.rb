@@ -24,6 +24,23 @@ require_relative "lib/post_processors"
 require_relative "lib/templates"
 
 #
+# Constants
+#
+
+DOCS_PATH = "/docs"
+GUIDES_PATH = "/guides"
+HIGHLIGHTS_PATH = "/highlights"
+HOST = "https://vector.dev"
+OPERATING_SYSTEMS = ["Linux", "MacOS", "Windows"].freeze
+POSTS_PATH = "/blog"
+
+ROOT_DIR = Dir.pwd
+VECTOR_MANAGEMENT_TARGET_DIR = File.join(ROOT_DIR, "targets", "vector-management")
+VECTOR_TARGET_DIR = File.join(ROOT_DIR, "targets", "vector")
+VECTOR_WEBSITE_TARGET_DIR = File.join(ROOT_DIR, "targets", "vector-website")
+VECTOR_WEBSITE_STATIC_DIR = File.join(VECTOR_WEBSITE_TARGET_DIR, "static")
+
+#
 # Functions
 #
 
@@ -54,29 +71,16 @@ def render_templates(metadata, target_dir, relative_link_paths)
 		end
 
 		File.write(template.gsub(/\.erb$/, ""), content)
+
+		Printer.say("Rendered #{template.gsub(ROOT_DIR, "")}")
 	end
 end
 
 #
-# Constants
-#
-
-DOCS_PATH = "/docs"
-GUIDES_PATH = "/guides"
-HIGHLIGHTS_PATH = "/highlights"
-HOST = "https://vector.dev"
-OPERATING_SYSTEMS = ["Linux", "MacOS", "Windows"].freeze
-POSTS_PATH = "/blog"
-
-ROOT_DIR = Dir.pwd
-VECTOR_TARGET_DIR = File.join(ROOT_DIR, "targets", "vector")
-VECTOR_WEBSITE_TARGET_DIR = File.join(ROOT_DIR, "targets", "vector-website")
-VECTOR_WEBSITE_STATIC_DIR = File.join(VECTOR_WEBSITE_TARGET_DIR, "static")
-
-
-#
 # Globals
 #
+
+Printer.title("Loading data...")
 
 global_meta = DataLoaders::MetaLoader.load!(File.join(ROOT_DIR, ".meta", "global"))
 docs = DataLoaders::DocsLoader.load!(File.join(VECTOR_WEBSITE_TARGET_DIR, "docs"))
@@ -94,8 +98,10 @@ permalinks =
 	}
 
 #
-# vector repo
+# targets/vector
 #
+
+Printer.title("Generating targets/vector")
 
 # use v0.10 so we aren't changes changes that have not been released
 vector_meta = DataLoaders::MetaLoader.load!(File.join(ROOT_DIR, ".meta", "vector", "v0.10", ".meta"))
@@ -103,10 +109,22 @@ metadata = Metadata.new(global_meta, vector_meta, guides, highlights, posts, per
 render_templates(metadata, VECTOR_TARGET_DIR, false)
 
 #
-# vector-website repo
+# targets/vector-website
 #
+
+Printer.title("Generating targets/vector-website")
 
 # use v0.10 so we aren't exposing changes that have not been released
 vector_meta = DataLoaders::MetaLoader.load!(File.join(ROOT_DIR, ".meta", "vector", "v0.10", ".meta"))
 metadata = Metadata.new(global_meta, vector_meta, guides, highlights, posts, permalinks)
 render_templates(metadata, VECTOR_WEBSITE_TARGET_DIR, true)
+
+#
+# targets/vector-management
+#
+
+Printer.title("Generating targets/vector-management")
+
+vector_meta = DataLoaders::MetaLoader.load!(File.join(ROOT_DIR, ".meta", "vector", "master", ".meta"))
+metadata = Metadata.new(global_meta, vector_meta, guides, highlights, posts, permalinks)
+render_templates(metadata, VECTOR_MANAGEMENT_TARGET_DIR, true)

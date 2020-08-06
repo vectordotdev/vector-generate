@@ -14,3 +14,7 @@
 	path = .meta/vector/master
 	url = git@github.com:timberio/vector.git
 	branch = master
+[submodule "targets/vector-management"]
+	path = targets/vector-management
+	url = git@github.com:timberio/vector-management.git
+	branch = master
