@@ -21,6 +21,7 @@ require_relative "lib/data_loaders"
 require_relative "lib/json_schema"
 require_relative "lib/metadata"
 require_relative "lib/post_processors"
+require_relative "lib/seeds"
 require_relative "lib/templates"
 
 #
@@ -38,6 +39,8 @@ ROOT_DIR = Dir.pwd
 VECTOR_MANAGEMENT_TARGET_DIR = File.join(ROOT_DIR, "targets", "vector-management")
 VECTOR_TARGET_DIR = File.join(ROOT_DIR, "targets", "vector")
 VECTOR_WEBSITE_TARGET_DIR = File.join(ROOT_DIR, "targets", "vector-website")
+VECTOR_WEBSITE_GUIDES_DIR = File.join(VECTOR_WEBSITE_TARGET_DIR, "guides")
+VECTOR_WEBSITE_RELEASES_DIR = File.join(VECTOR_WEBSITE_TARGET_DIR, "releases")
 VECTOR_WEBSITE_STATIC_DIR = File.join(VECTOR_WEBSITE_TARGET_DIR, "static")
 
 #
@@ -84,7 +87,7 @@ Printer.title("Loading data...")
 
 global_meta = DataLoaders::MetaLoader.load!(File.join(ROOT_DIR, ".meta", "global"))
 docs = DataLoaders::DocsLoader.load!(File.join(VECTOR_WEBSITE_TARGET_DIR, "docs"))
-guides = DataLoaders::GuidesLoader.load!(File.join(VECTOR_WEBSITE_TARGET_DIR, "guides"))
+guides = DataLoaders::GuidesLoader.load!(VECTOR_WEBSITE_GUIDES_DIR)
 highlights = DataLoaders::HighlightsLoader.load!(File.join(VECTOR_WEBSITE_TARGET_DIR, "highlights"))
 pages = DataLoaders::PagesLoader.load!(File.join(VECTOR_WEBSITE_TARGET_DIR, "src", "pages"))
 posts = DataLoaders::PostsLoader.load!(File.join(VECTOR_WEBSITE_TARGET_DIR, "blog"))
@@ -117,6 +120,12 @@ Printer.title("Generating targets/vector-website")
 # use v0.10 so we aren't exposing changes that have not been released
 vector_meta = DataLoaders::MetaLoader.load!(File.join(ROOT_DIR, ".meta", "vector", "v0.10", ".meta"))
 metadata = Metadata.new(global_meta, vector_meta, guides, highlights, posts, permalinks)
+
+Seeds::GuideSeeds.seed_platforms!(metadata, VECTOR_WEBSITE_GUIDES_DIR)
+Seeds::GuideSeeds.seed_sinks!(metadata, VECTOR_WEBSITE_GUIDES_DIR)
+Seeds::GuideSeeds.seed_sources!(metadata, VECTOR_WEBSITE_GUIDES_DIR)
+Seeds::ReleaseSeeds.seed_releases!(metadata, VECTOR_WEBSITE_RELEASES_DIR)
+
 render_templates(metadata, VECTOR_WEBSITE_TARGET_DIR, true)
 
 #
