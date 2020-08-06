@@ -8,21 +8,15 @@ class Templates
       content.strip
     end
 
-		def subpages(link_name = nil)
-	    dir =
-	      if link_name
-	        docs_dir = metadata.links.fetch(link_name).gsub(/\/$/, "")
-	        "#{WEBSITE_ROOT}#{docs_dir}"
-	      else
-	        dirname = File.basename(@_template_path).split(".").first
-	        @_template_path.split("/")[0..-2].join("/") + "/#{dirname}"
-	      end
+		def subpages
+	    dirname = File.basename(@_template_path).split(".").first
+	    dir = @_template_path.split("/")[0..-2].join("/") + "/#{dirname}"
 
 	    Dir.glob("#{dir}/*.md").
 	      to_a.
 	      sort.
 	      collect do |f|
-	        path = DOCS_BASE_PATH + f.gsub(DOCS_ROOT, '').split(".").first
+	        path = f.gsub(VECTOR_WEBSITE_TARGET_DIR, '').split(".").first
 	        name = File.basename(f).split(".").first.gsub("-", " ").humanize
 
 	        loader = FrontMatterParser::Loader::Yaml.new(whitelist_classes: [Date])

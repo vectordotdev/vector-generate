@@ -104,7 +104,7 @@ class Metadata
 		          end
 
 		        variations.each do |variation|
-		          path = "#{VECTOR_ROOT}/src/#{type.pluralize}/#{variation}"
+		          path = "#{VECTOR_TARGET_DIR}/src/#{type.pluralize}/#{variation}"
 		          if File.exists?(path) || File.directory?(path)
 		            return "#{VECTOR_REPO_URL}/tree/master/src/#{type.pluralize}/#{variation}"
 		          end
@@ -118,7 +118,7 @@ class Metadata
 
 		          We tried the following paths:
 
-		            * #{paths.join("\n  * ")}
+		          * #{paths.join("\n* ").indent(2)}
 
 		          If the path to the source file is unique, please add it to the
 		          links.toml file.

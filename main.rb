@@ -71,6 +71,8 @@ POSTS_PATH = "/blog"
 ROOT_DIR = Dir.pwd
 VECTOR_TARGET_DIR = File.join(ROOT_DIR, "targets", "vector")
 VECTOR_WEBSITE_TARGET_DIR = File.join(ROOT_DIR, "targets", "vector-website")
+VECTOR_WEBSITE_STATIC_DIR = File.join(VECTOR_WEBSITE_TARGET_DIR, "static")
+
 
 #
 # Globals
@@ -81,7 +83,7 @@ docs = DataLoaders::DocsLoader.load!(File.join(VECTOR_WEBSITE_TARGET_DIR, "docs"
 guides = DataLoaders::GuidesLoader.load!(File.join(VECTOR_WEBSITE_TARGET_DIR, "guides"))
 highlights = DataLoaders::HighlightsLoader.load!(File.join(VECTOR_WEBSITE_TARGET_DIR, "highlights"))
 pages = DataLoaders::PagesLoader.load!(File.join(VECTOR_WEBSITE_TARGET_DIR, "src", "pages"))
-posts = DataLoaders::PostsLoader.load!(File.join(VECTOR_WEBSITE_TARGET_DIR, "posts"))
+posts = DataLoaders::PostsLoader.load!(File.join(VECTOR_WEBSITE_TARGET_DIR, "blog"))
 permalinks =
 	{
 		"docs" => docs.collect { |d| d.fetch("permalink") },
@@ -92,9 +94,19 @@ permalinks =
 	}
 
 #
-# Vector repo
+# vector repo
 #
 
+# use v0.10 so we aren't changes changes that have not been released
 vector_meta = DataLoaders::MetaLoader.load!(File.join(ROOT_DIR, ".meta", "vector", "v0.10", ".meta"))
 metadata = Metadata.new(global_meta, vector_meta, guides, highlights, posts, permalinks)
 render_templates(metadata, VECTOR_TARGET_DIR, false)
+
+#
+# vector-website repo
+#
+
+# use v0.10 so we aren't exposing changes that have not been released
+vector_meta = DataLoaders::MetaLoader.load!(File.join(ROOT_DIR, ".meta", "vector", "v0.10", ".meta"))
+metadata = Metadata.new(global_meta, vector_meta, guides, highlights, posts, permalinks)
+render_templates(metadata, VECTOR_WEBSITE_TARGET_DIR, true)

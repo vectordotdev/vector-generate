@@ -141,7 +141,7 @@ class Component
     variations.each do |name|
       path = "/img/logos/#{name}.svg"
 
-      if File.exists?("#{STATIC_ROOT}#{path}")
+      if File.exists?("#{VECTOR_WEBSITE_STATIC_DIR}#{path}")
         @logo_path = path
         break
       end

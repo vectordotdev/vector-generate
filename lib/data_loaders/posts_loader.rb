@@ -20,8 +20,8 @@ module DataLoaders
   	    description = parsed.content.split("\n\n").first.remove_markdown_links
 
     		front_matter = parsed.front_matter
-    		id = path.sub(dir, '').sub(/\.md$/, "")
-  	    permalink = "#{POSTS_PATH}#{id}/"
+    		id = path.sub(dir + "/", "").sub(/\.md$/, "")
+  	    permalink = "#{POSTS_PATH}/#{id}/"
 
     		front_matter.clone.merge({
     			"date" => date,

@@ -52,7 +52,7 @@ class Metadata
 
     def fetch_id(id)
       # Docusaurus does not allow a leading or trailing `/`
-      fetch(id).gsub(/^#{DOCS_BASE_PATH}\//, "").gsub(/\/$/, "")
+      fetch(id).split("/")[2..-1].join("/").gsub(/\/$/, "")
     end
 
     private

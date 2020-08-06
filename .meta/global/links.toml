@@ -1,5 +1,11 @@
 [links]
 
+[links.guides]
+advanced = "/guides/advanced/"
+getting-started = "/guides/getting-started/"
+index = "/guides/"
+integrate = "/guides/integrate/"
+
 [links.pages]
 aws_components = "/components/?providers%5B%5D=aws"
 blog = "/blog/"

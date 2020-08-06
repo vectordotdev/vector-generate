@@ -40,14 +40,14 @@ class Metadata
     :team,
     :transforms
 
-  def initialize(global_meta, vector_meta, guides, highlights, posts, permalinks)
+  def initialize(global_meta, vector_meta, guides_data, highlights_data, posts_data, permalinks)
     @data_model = DataModel.new(vector_meta.fetch("data_model"))
     @domains = global_meta.fetch("domains").collect { |h| OpenStruct.new(h) }
-    @guides = guides.to_struct_with_name(constructor: Guides)
-    @highlights ||= highlights.collect { |hash| Highlight.new(hash) }
+    @guides = guides_data.to_struct_with_name(constructor: Guides)
+    @highlights = highlights_data.collect { |hash| Highlight.new(hash) }
     @installation = Installation.new(vector_meta.fetch("installation"))
     @options = vector_meta.fetch("options").to_struct_with_name(constructor: Field)
-    @posts ||= highlights.collect { |hash| Post.new(hash) }
+    @posts = posts_data.collect { |hash| Post.new(hash) }
     @releases = OpenStruct.new()
     @sinks = OpenStruct.new()
     @sources = OpenStruct.new()
@@ -193,9 +193,9 @@ class Metadata
   end
 
   def new_release
-    return @new_post if defined?(@new_post)
+    return @new_release if defined?(@new_release)
 
-    @new_post ||=
+    @new_release ||=
       begin
         last_release = releases.releases_list.last
 

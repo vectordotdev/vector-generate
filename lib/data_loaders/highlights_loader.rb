@@ -20,8 +20,8 @@ module DataLoaders
   			content = File.read(path)
       	date = "#{path_parts.fetch(0)}-#{path_parts.fetch(1)}-#{path_parts.fetch(2)}"
     		front_matter = parsed.front_matter
-    		id = path.sub(dir, '').sub(/\.md$/, "")
-  			permalink = "#{HIGHLIGHTS_PATH}#{id}/"
+    		id = path.sub(dir + "/", "").sub(/\.md$/, "")
+  			permalink = "#{HIGHLIGHTS_PATH}/#{id}/"
 
     		front_matter.clone.merge({
     			"content" => content,

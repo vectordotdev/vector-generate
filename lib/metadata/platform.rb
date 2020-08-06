@@ -20,7 +20,7 @@ class Platform
   def logo_path
     return @logo_path if defined?(@logo_path)
     path = "/img/logos/#{name}.svg"
-    @logo_path = File.exists?("#{STATIC_ROOT}#{path}") ? path : nil
+    @logo_path = File.exists?("#{VECTOR_WEBSITE_STATIC_DIR}#{path}") ? path : nil
   end
 
   def to_h
