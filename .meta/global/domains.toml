@@ -8,6 +8,10 @@ name = "architecture"
 description = "Anything related to Vector's architecture"
 
 [[domains]]
+name = "auth"
+description = "Anything related to authentication/authorization within Vector"
+
+[[domains]]
 name = "blog"
 description = "Anything related to Vector's blog"
 
