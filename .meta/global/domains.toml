@@ -56,6 +56,10 @@ name = "enriching"
 description = "Anything related to enriching Vector's events with context data"
 
 [[domains]]
+name = "filtering"
+description = "Anything related to filtering within Vector"
+
+[[domains]]
 name = "guides"
 description = "Anything related to Vector's public guides"
 
@@ -128,6 +132,14 @@ name = "reliability"
 description = "Anything related to Vector's reliability"
 
 [[domains]]
+name = "reload"
+description = "Anything related to reloading Vector (updating configuration)"
+
+[[domains]]
+name = "rfcs"
+description = "Anything related to Vector's internal RFCs"
+
+[[domains]]
 name = "security"
 description = "Anything related to security"
 
@@ -150,6 +162,10 @@ description = "Anything related to the Vector's sources"
 [[domains]]
 name = "startup"
 description = "Anything related to the startup of Vector"
+
+[[domains]]
+name = "templating"
+description = "Anything related to templating Vector's configuration values"
 
 [[domains]]
 name = "tests"
