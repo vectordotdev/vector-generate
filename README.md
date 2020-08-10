@@ -32,7 +32,7 @@ Vector metadata ([`/.meta`](/.meta)).
 Vector is a large project that covers a lot of surface area. In order to
 document and market Vector we need to create a lot of different documents:
 
-1. The [Vector reference docs][vector_reference_docs].
+1. The [Vector reference docs][vector_reference].
 2. The [Vector components page][vector_components].
 3. Listing all of the components on the [Vector README][vector_readme].
 4. [Deriving Gihub labels and settings][vector_management_locals] from this data.
