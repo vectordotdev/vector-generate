@@ -43,12 +43,21 @@ generate them. This ensures that these pages are accurate, consistent, and
 decoupled from the underlying system, affording us the ability to quickly
 iterate and improve them.
 
+### Example 1: The Vector reference docs
+
 For example, the [Vector reference docs][vector_reference] contain over 150
 pages that contain detailed configuration information for all of Vector's
-components. All of these pages are evolving and improving, something that would
-not be possible through manual maintenance.
+components. All of these pages have evolved over time, something that would not
+be possible through manual intervention.
 
-## How
+### Example 2: Migrating the Vector website
+
+We've migrated the Vector website 3 times to ensure it delivers a good UX.
+For Vector, the docs play a critical role in achieving this and we are afforded
+this agility through documentation generation. Baking all of this data into
+markdown files would make it difficult, if not impossible, to migrate over time.
+
+## How?
 
 1. [`main.rb`](/main.rb) is the main executable.
 2. Upon execution it first loads all of the metdata in the [`.meta`](/.meta)
