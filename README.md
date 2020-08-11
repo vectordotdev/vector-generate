@@ -23,7 +23,7 @@ Or without Docker:
 
 ## What?
 
-This repository contains a single script ([`main.rb`](/main.rb)) that generates
+This repository contains a single script ([`/main.rb`](/main.rb)) that generates
 files across various Vector repositories ([`/targets/*`](/targets)) from the
 Vector metadata ([`/.meta`](/.meta)).
 
