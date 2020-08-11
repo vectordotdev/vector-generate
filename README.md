@@ -48,14 +48,14 @@ iterate and improve them.
 For example, the [Vector reference docs][vector_reference] contain over 150
 pages that contain detailed configuration information for all of Vector's
 components. All of these pages have evolved over time, something that would not
-be possible through manual intervention.
+be easily possible otherwise.
 
 ### Example 2: Migrating the Vector website
 
 We've migrated the Vector website 3 times to ensure it delivers a good UX.
 For Vector, the docs play a critical role in achieving this and we are afforded
 this agility through documentation generation. Baking all of this data into
-markdown files would make it difficult, if not impossible, to migrate over time.
+markdown files would make it difficult and time consuming to do this.
 
 ## How?
 
