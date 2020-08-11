@@ -72,6 +72,14 @@ markdown files would make it difficult, if not impossible, to migrate over time.
    in the context of the loaded metadata. The rendered template is placed in the
    same path as the template without the `.erb` extension.
 
+## History
+
+Finally, it's worth noting some history on this system. What you see here is
+not the result of some carefully crafted master plan. This system evolved over
+time as a means to an end. It initially started as a simple script to help with
+documentation, and evolved into something much larger over time. We've taken
+care to organize the code and keep it clean, but there is certainly room for
+improvement.
 
 [vector_components]: https://vector.dev/components/
 [vector_management_locals]: https://github.com/timberio/vector-management/blob/master/github/locals_generated.tf.erb
