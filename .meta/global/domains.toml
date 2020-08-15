@@ -1,19 +1,15 @@
 
 [[domains]]
 name = "administration"
-description = "Anything related to administration/operation of Vector"
+description = "Anything related to administration/operation"
 
 [[domains]]
 name = "architecture"
-description = "Anything related to Vector's architecture"
+description = "Anything related to architecture"
 
 [[domains]]
 name = "auth"
-description = "Anything related to authentication/authorization within Vector"
-
-[[domains]]
-name = "blog"
-description = "Anything related to Vector's blog"
+description = "Anything related to authentication/authorization"
 
 [[domains]]
 name = "buffers"
@@ -58,10 +54,6 @@ description = "Anything related to enriching Vector's events with context data"
 [[domains]]
 name = "filtering"
 description = "Anything related to filtering within Vector"
-
-[[domains]]
-name = "guides"
-description = "Anything related to Vector's public guides"
 
 [[domains]]
 name = "external docs"
