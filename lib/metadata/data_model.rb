@@ -12,6 +12,13 @@ class Metadata
 	    @metric = Metric.new(hash.fetch("metric"))
 	  end
 
+	  def to_h
+	  	{
+	  		log: log.deep_to_h,
+	  		metric: metric.deep_to_h
+	  	}
+	  end
+
 	  def types
 	    TYPES
 	  end

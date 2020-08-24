@@ -11,5 +11,11 @@ class Metadata
 	  def schema_list
 	    @schema_list ||= schema.to_h.values.sort
 	  end
+
+    def to_h
+      {
+        schema: schema.deep_to_h
+      }
+    end
 	end
 end
