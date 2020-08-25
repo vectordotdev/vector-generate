@@ -96,11 +96,23 @@ end
 Printer.title("Loading data...")
 
 global_meta = DataLoaders::MetaLoader.load!(File.join(ROOT_DIR, ".meta", "global"))
+Printer.say("Loaded #{File.join(ROOT_DIR, ".meta", "global")}")
+
 docs = DataLoaders::DocsLoader.load!(File.join(VECTOR_WEBSITE_TARGET_DIR, "docs"))
+Printer.say("Loaded #{File.join(VECTOR_WEBSITE_TARGET_DIR, "docs")}")
+
 guides = DataLoaders::GuidesLoader.load!(VECTOR_WEBSITE_GUIDES_DIR)
+Printer.say("Loaded #{VECTOR_WEBSITE_GUIDES_DIR}")
+
 highlights = DataLoaders::HighlightsLoader.load!(File.join(VECTOR_WEBSITE_TARGET_DIR, "highlights"))
+Printer.say("Loaded #{File.join(VECTOR_WEBSITE_TARGET_DIR, "highlights")}")
+
 pages = DataLoaders::PagesLoader.load!(File.join(VECTOR_WEBSITE_TARGET_DIR, "src", "pages"))
+Printer.say("Loaded #{File.join(VECTOR_WEBSITE_TARGET_DIR, "src", "pages")}")
+
 posts = DataLoaders::PostsLoader.load!(File.join(VECTOR_WEBSITE_TARGET_DIR, "blog"))
+Printer.say("Loaded #{File.join(VECTOR_WEBSITE_TARGET_DIR, "blog")}")
+
 permalinks =
 	{
 		"docs" => docs.collect { |d| d.fetch("permalink") },
@@ -117,7 +129,7 @@ permalinks =
 Printer.title("Generating targets/vector")
 
 # use v0.10 so we aren't changes changes that have not been released
-vector_meta = DataLoaders::MetaLoader.load!(File.join(ROOT_DIR, ".meta", "vector", "v0.10", ".meta"))
+vector_meta = DataLoaders::MetaLoader.load!(File.join(ROOT_DIR, ".meta", "vector", "master", ".meta"))
 metadata = Metadata.new(global_meta, vector_meta, guides, highlights, posts, permalinks)
 render_templates(metadata, VECTOR_TARGET_DIR, false)
 

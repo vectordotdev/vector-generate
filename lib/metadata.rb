@@ -123,7 +123,8 @@ class Metadata
 
     # links
 
-    @links = Links.new(global_meta.fetch("links"), permalinks)
+    links_meta = global_meta.fetch("links").deep_merge(vector_meta["links"] || {})
+    @links = Links.new(links_meta, permalinks)
 
     # env vars
 
