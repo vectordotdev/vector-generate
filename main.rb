@@ -86,6 +86,9 @@ def render_templates(metadata, target_dir, relative_link_paths)
 		File.write(template.gsub(/\.erb$/, ""), content)
 
 		Printer.say("Rendered #{template.gsub(ROOT_DIR, "")}")
+	rescue StandardError
+		Printer.say("Error while rendering file #{template.gsub(ROOT_DIR, "")}")
+		raise
 	end
 end
 
