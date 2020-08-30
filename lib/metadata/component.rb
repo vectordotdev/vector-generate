@@ -23,7 +23,6 @@ class Metadata
       :permissions,
       :posts,
       :requirements,
-      :service_name,
       :service_providers,
       :title,
       :type,
@@ -41,7 +40,6 @@ class Metadata
       @permissions = (hash["permissions"] || {}).to_struct_with_name(constructor: Permission)
       @posts = hash.fetch("posts")
       @requirements = OpenStruct.new(hash["requirements"] || {})
-      @service_name = hash["service_name"] || hash.fetch("title")
       @service_providers = hash["service_providers"] || []
       @title = hash.fetch("title")
       @type ||= self.class.name.split("::").last.downcase
@@ -208,11 +206,13 @@ class Metadata
     def to_h
       {
         beta: beta?,
+        common: common,
         config_examples: {
           toml: config_example(:toml)
         },
         delivery_guarantee: (respond_to?(:delivery_guarantee, true) ? delivery_guarantee : nil),
         description: (description ? description.remove_markdown_links : nil),
+        env_vars: env_vars_list.deep_to_h,
         event_types: event_types,
         features: features,
         function_category: (respond_to?(:function_category, true) ? function_category : nil),
@@ -220,6 +220,8 @@ class Metadata
         logo_path: logo_path,
         name: name,
         operating_systems: (transform? ? [] : operating_systems),
+        options: options_list.deep_to_h,
+        requirements: requirements.deep_to_h,
         service_providers: service_providers,
         short_description: (short_description ? short_description.remove_markdown_links : nil),
         status: status,
