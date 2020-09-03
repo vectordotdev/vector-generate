@@ -300,7 +300,7 @@ class Metadata
       {
         name: name,
         category: category,
-        children: children.deep_to_h,
+        children: children_list.deep_to_h,
         default: default,
         description: description,
         enum: enum,
