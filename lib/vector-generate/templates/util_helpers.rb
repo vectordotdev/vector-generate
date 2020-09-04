@@ -17,7 +17,7 @@ module VectorGenerate
 		      to_a.
 		      sort.
 		      collect do |f|
-		        path = f.gsub(VECTOR_WEBSITE_TARGET_DIR, '').split(".").first
+		        path = f.gsub(website_root_dir, '').split(".").first
 		        name = File.basename(f).split(".").first.gsub("-", " ").humanize
 
 		        loader = FrontMatterParser::Loader::Yaml.new(whitelist_classes: [Date])

@@ -24,7 +24,7 @@ module VectorGenerate
   OPERATING_SYSTEMS = ["Linux", "MacOS", "Windows"].freeze
   POSTS_PATH = "/blog"
 
-  def self.render_templates(metadata, target_dir, templates_dir, relative_link_paths)
+  def self.render_templates(metadata, target_dir, website_root_dir, templates_dir, relative_link_paths)
     templates =
       Dir.
         glob("#{target_dir}/**/[^_]*.erb", File::FNM_DOTMATCH).

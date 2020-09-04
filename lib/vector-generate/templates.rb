@@ -24,11 +24,12 @@ module VectorGenerate
   	include ReleaseHelpers
   	include UtilHelpers
 
-  	attr_reader :metadata, :partials_path
+  	attr_reader :metadata, :partials_path, :website_root_dir
 
-  	def initialize(metadata, templates_dir)
+  	def initialize(metadata, website_root_dir, templates_dir)
       @partials_path = "#{templates_dir}/_partials"
       @metadata = metadata
+      @website_root_dir = website_root_dir
     end
 
     def partial?(template_path)
