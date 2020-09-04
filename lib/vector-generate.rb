@@ -29,7 +29,7 @@ module VectorGenerate
       Dir.
         glob("#{target_dir}/**/[^_]*.erb", File::FNM_DOTMATCH).
         to_a.
-        filter { |path| !path.start_with?("#{target_dir}/.meta/") }
+        filter { |path| !path.start_with?("#{target_dir}/.meta/") }.
         filter { |path| !path.start_with?(templates_dir) }
 
     template_context = Templates.new(metadata, templates_dir)
