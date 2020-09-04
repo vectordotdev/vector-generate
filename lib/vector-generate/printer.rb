@@ -1,3 +1,5 @@
+require "paint"
+
 module VectorGenerate
   module Printer
     PROMPT = "---> "
