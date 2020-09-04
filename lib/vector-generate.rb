@@ -32,7 +32,7 @@ module VectorGenerate
         filter { |path| !path.start_with?("#{target_dir}/.meta/") }.
         filter { |path| !path.start_with?(templates_dir) }
 
-    template_context = Templates.new(metadata, templates_dir)
+    template_context = Templates.new(metadata, website_root_dir, templates_dir)
 
     templates.each do |template|
       content = template_context.render(template)
