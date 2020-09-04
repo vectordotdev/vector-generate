@@ -71,7 +71,7 @@ class Hash
   def validate_schema(base_path)
     if self["$schema"]
       schema_path = base_path + "/" + self["$schema"]
-      JSONSchema.validate(schema_path, self)
+      VectorGenerate::JSONSchema.validate(schema_path, self)
     else
       []
     end
@@ -80,7 +80,7 @@ class Hash
   def validate_schema!(base_path)
     if self["$schema"]
       schema_path = base_path + "/" + self["$schema"]
-      JSONSchema.validate!(schema_path, self)
+      VectorGenerate::JSONSchema.validate!(schema_path, self)
     end
 
     self
