@@ -1,3 +1,4 @@
+require 'word_wrap'
 require 'word_wrap/core_ext'
 
 class String
