@@ -41,19 +41,19 @@ module VectorGenerate
       :team,
       :transforms
 
-    def initialize(global_meta, vector_meta, guides_data, highlights_data, posts_data, permalinks)
-      @data_model = DataModel.new(vector_meta.fetch("data_model"))
-      @domains = global_meta.fetch("domains").collect { |h| OpenStruct.new(h) }
+    def initialize(meta, guides_data, highlights_data, posts_data, permalinks)
+      @data_model = DataModel.new(meta.fetch("data_model"))
+      @domains = meta.fetch("domains").collect { |h| OpenStruct.new(h) }
       @guides = guides_data.to_struct_with_name(constructor: Guides)
       @highlights = highlights_data.collect { |hash| Highlight.new(hash) }
-      @installation = Installation.new(vector_meta.fetch("installation"))
-      @options = vector_meta.fetch("options").to_struct_with_name(constructor: Field)
+      @installation = Installation.new(meta.fetch("installation"))
+      @options = meta.fetch("options").to_struct_with_name(constructor: Field)
       @posts = posts_data.collect { |hash| Post.new(hash) }
       @releases = OpenStruct.new()
       @sinks = OpenStruct.new()
       @sources = OpenStruct.new()
       @transforms = OpenStruct.new()
-      @tests = Field.new(vector_meta.fetch("tests").merge({"name" => "tests"}))
+      @tests = Field.new(meta.fetch("tests").merge({"name" => "tests"}))
 
       # domains
 
@@ -61,11 +61,11 @@ module VectorGenerate
       # releases
 
       release_versions =
-        vector_meta.fetch("releases").collect do |version_string, _release_hash|
+        meta.fetch("releases").collect do |version_string, _release_hash|
           Version.new(version_string)
         end
 
-      vector_meta.fetch("releases").collect do |version_string, release_hash|
+      meta.fetch("releases").collect do |version_string, release_hash|
         version = Version.new(version_string)
 
         last_version =
@@ -81,7 +81,7 @@ module VectorGenerate
 
       # sources
 
-      vector_meta.fetch("sources").collect do |source_name, source_hash|
+      meta.fetch("sources").collect do |source_name, source_hash|
         source_hash["name"] = source_name
         source_hash["posts"] = posts.select { |post| post.source?(source_name) }
         source = Source.new(source_hash)
@@ -90,7 +90,7 @@ module VectorGenerate
 
       # transforms
 
-      vector_meta.fetch("transforms").collect do |transform_name, transform_hash|
+      meta.fetch("transforms").collect do |transform_name, transform_hash|
         transform_hash["name"] = transform_name
         transform_hash["posts"] = posts.select { |post| post.transform?(transform_name) }
         transform = Transform.new(transform_hash)
@@ -99,12 +99,12 @@ module VectorGenerate
 
       # sinks
 
-      vector_meta.fetch("sinks").collect do |sink_name, sink_hash|
+      meta.fetch("sinks").collect do |sink_name, sink_hash|
         sink_hash["name"] = sink_name
         sink_hash["posts"] = posts.select { |post| post.sink?(sink_name) }
 
         (sink_hash["service_providers"] || []).each do |service_provider|
-          provider_hash = (vector_meta["service_providers"] || {})[service_provider.downcase] || {}
+          provider_hash = (meta["service_providers"] || {})[service_provider.downcase] || {}
           sink_hash["env_vars"] = (sink_hash["env_vars"] || {}).merge((provider_hash["env_vars"] || {}).clone)
           sink_hash["options"] = sink_hash["options"].merge((provider_hash["options"] || {}).clone)
         end
@@ -124,12 +124,12 @@ module VectorGenerate
 
       # links
 
-      links_meta = global_meta.fetch("links").deep_merge(vector_meta["links"] || {})
+      links_meta = meta.fetch("links").deep_merge(meta["links"] || {})
       @links = Links.new(links_meta, permalinks)
 
       # env vars
 
-      @env_vars = (vector_meta.fetch("env_vars") || {}).to_struct_with_name(constructor: Field)
+      @env_vars = (meta.fetch("env_vars") || {}).to_struct_with_name(constructor: Field)
 
       components.each do |component|
         component.env_vars.to_h.each do |key, val|
@@ -140,7 +140,7 @@ module VectorGenerate
       # team
 
       @team =
-        vector_meta.fetch("team").collect do |member|
+        meta.fetch("team").collect do |member|
           OpenStruct.new(member)
         end
     end
