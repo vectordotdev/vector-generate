@@ -1,11 +1,3 @@
 ruby '~> 2.7.0'
-
 source 'https://rubygems.org'
-gem 'activesupport', '~> 6.0'
-gem 'differ', '~> 0.1'
-gem 'front_matter_parser', '~> 0.2'
-gem 'json_schemer', '~> 0.2.8'
-gem 'paint', '~> 2.1'
-gem 'toml-rb', '~> 2.0'
-gem 'unindent', '~> 1.0'
-gem 'word_wrap', '~> 1.0'
+gemspec
