@@ -24,14 +24,15 @@ module VectorGenerate
   OPERATING_SYSTEMS = ["Linux", "MacOS", "Windows"].freeze
   POSTS_PATH = "/blog"
 
-  def self.render_templates(metadata, target_dir, relative_link_paths)
+  def self.render_templates(metadata, target_dir, templates_dir, relative_link_paths)
     templates =
       Dir.
         glob("#{target_dir}/**/[^_]*.erb", File::FNM_DOTMATCH).
         to_a.
         filter { |path| !path.start_with?("#{target_dir}/.meta/") }
+        filter { |path| !path.start_with?(templates_dir) }
 
-    template_context = Templates.new(metadata)
+    template_context = Templates.new(metadata, templates_dir)
 
     templates.each do |template|
       content = template_context.render(template)

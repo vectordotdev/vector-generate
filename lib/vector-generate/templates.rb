@@ -26,8 +26,8 @@ module VectorGenerate
 
   	attr_reader :metadata, :partials_path
 
-  	def initialize(metadata)
-      @partials_path = "templates/_partials"
+  	def initialize(metadata, templates_dir)
+      @partials_path = "#{templates_dir}/_partials"
       @metadata = metadata
     end
 
