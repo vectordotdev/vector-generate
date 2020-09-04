@@ -90,41 +90,7 @@ module VectorGenerate
 			        name_prefix = name_parts.first
 			        suffixed_name = name_parts[1..-1].join("_")
 			        type = $2
-
-			        variations =
-			          [
-			            "#{name}.rs",
-			            "#{name_prefix}/#{suffixed_name}.rs",
-			            "#{name}",
-			            "#{name_prefix}"
-			          ]
-
-			        paths =
-			          variations.collect do |variation|
-			            "#{VECTOR_REPO_URL}/tree/master/src/#{type.pluralize}/#{variation}"
-			          end
-
-			        variations.each do |variation|
-			          path = "#{VECTOR_TARGET_DIR}/src/#{type.pluralize}/#{variation}"
-			          if File.exists?(path) || File.directory?(path)
-			            return "#{VECTOR_REPO_URL}/tree/master/src/#{type.pluralize}/#{variation}"
-			          end
-			        end
-
-			        raise KeyError.new(
-			          <<~EOF
-			          Unknown link!
-
-			            urls.#{name}_source
-
-			          We tried the following paths:
-
-			          * #{paths.join("\n* ").indent(2)}
-
-			          If the path to the source file is unique, please add it to the
-			          links.toml file.
-			          EOF
-			        )
+			        "#{VECTOR_REPO_URL}/tree/master/src/#{type.pluralize}/#{name}.rs"
 
 			      when /^(.*)_test$/
 			        "#{TEST_HARNESS_URL}/tree/master/cases/#{$1}"
