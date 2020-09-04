@@ -44,5 +44,6 @@ module VectorGenerate
         "posts" => posts,
         "permalinks" => permalinks
       })
+    end
   end
 end
