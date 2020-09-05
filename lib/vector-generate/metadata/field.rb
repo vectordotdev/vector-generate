@@ -301,7 +301,7 @@ module VectorGenerate
         {
           name: name,
           category: category,
-          children: children_list.deep_to_h,
+          children: children.deep_to_h,
           default: default,
           description: description,
           enum: enum,

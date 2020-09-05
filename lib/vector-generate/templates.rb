@@ -1,35 +1,16 @@
-require_relative "templates/component_helpers"
 require_relative "templates/config_helpers"
-require_relative "templates/event_helpers"
-require_relative "templates/fields_helpers"
-require_relative "templates/guide_helpers"
-require_relative "templates/highlight_helpers"
-require_relative "templates/installation_helpers"
-require_relative "templates/interface_helpers"
-require_relative "templates/option_helpers"
-require_relative "templates/release_helpers"
 require_relative "templates/util_helpers"
 
 module VectorGenerate
   class Templates
-  	include ComponentHelpers
-  	include ConfigHelpers
-  	include EventHelpers
-  	include FieldsHelpers
-  	include GuideHelpers
-  	include HighlightHelpers
-  	include InstallationHelpers
-  	include InterfaceHelpers
-  	include OptionHelpers
-  	include ReleaseHelpers
+    include ConfigHelpers
   	include UtilHelpers
 
-  	attr_reader :metadata, :partials_path, :website_root_dir
+  	attr_reader :metadata, :partials_dir
 
-  	def initialize(metadata, website_root_dir, templates_dir)
-      @partials_path = "#{templates_dir}/_partials"
+  	def initialize(metadata, partials_dir)
       @metadata = metadata
-      @website_root_dir = website_root_dir
+      @partials_dir = partials_dir
     end
 
     def partial?(template_path)
