@@ -13,7 +13,6 @@ require_relative "vector-generate/json_schema"
 require_relative "vector-generate/metadata"
 require_relative "vector-generate/post_processors"
 require_relative "vector-generate/printer"
-require_relative "vector-generate/seeds"
 require_relative "vector-generate/templates"
 
 module VectorGenerate
@@ -24,39 +23,43 @@ module VectorGenerate
   OPERATING_SYSTEMS = ["Linux", "MacOS", "Windows"].freeze
   POSTS_PATH = "/blog"
 
-  def self.render_templates(metadata, target_dir, website_root_dir, templates_dir, relative_link_paths)
-    templates =
+  def self.render_templates(root_dir, templates, relative_link_paths)
+    Printer.title("Generating templates in #{root_dir}")
+
+    template_paths =
       Dir.
-        glob("#{target_dir}/**/[^_]*.erb", File::FNM_DOTMATCH).
+        glob("#{root_dir}/**/[^_]*.erb", File::FNM_DOTMATCH).
         to_a.
-        filter { |path| !path.start_with?("#{target_dir}/.meta/") }.
-        filter { |path| !path.start_with?(templates_dir) }
+        filter { |path| !path.include?("/.meta/") }.
+        filter { |path| !path.include?("/_partials/") }.
+        filter { |path| !path.include?("/scripts/generate/") }
 
-    template_context = Templates.new(metadata, website_root_dir, templates_dir)
+    Printer.say("Found #{template_paths.size} templates to render")
 
-    templates.each do |template|
-      content = template_context.render(template)
+    template_paths.each do |template_path|
+      content = templates.render(template_path)
 
-      if template.end_with?(".md.erb")
+      if template_path.end_with?(".md.erb")
         content = content.clone
         content = PostProcessors::ComponentImporter.import!(content)
         content = PostProcessors::SectionSorter.sort!(content)
         content = PostProcessors::SectionReferencer.reference!(content)
         content = PostProcessors::OptionLinker.link!(content)
-        content = PostProcessors::LinkDefiner.define!(content, metadata.links, relative_link_paths)
-        # must be last
-        content = PostProcessors::LastModifiedSetter.set!(content, template)
+        content = PostProcessors::LinkDefiner.define!(content, templates.metadata.links, relative_link_paths)
 
-        # PostProcessors::FrontMatterValidator.validate!(content, template)
+        # must be last
+        #content = PostProcessors::LastModifiedSetter.set!(content, template_path)
+
+        # PostProcessors::FrontMatterValidator.validate!(content, template_path)
       end
 
-       content = PostProcessors::AutogenerateLabeler.label!(content, template)
+      content = PostProcessors::AutogenerateLabeler.label!(content, template_path)
 
-      File.write(template.gsub(/\.erb$/, ""), content)
+      File.write(template_path.gsub(/\.erb$/, ""), content)
 
-      Printer.say("Rendered #{template.gsub(ROOT_DIR, "")}")
+      Printer.say("Rendered #{template_path.gsub(root_dir, "")}")
     rescue StandardError
-      Printer.say("Error while rendering file #{template.gsub(ROOT_DIR, "")}")
+      Printer.say("Error while rendering file #{template_path.gsub(root_dir, "")}")
       raise
     end
   end

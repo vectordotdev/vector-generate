@@ -53,7 +53,7 @@ module VectorGenerate
 
               To make changes please edit the template located at:
 
-              #{template.gsub(ROOT_DIR, "").split("/")[3..-1].join("/")}
+              #{template.gsub(ROOT_DIR, "").gsub(/^\//, "")}
               EOF
 
             notice.strip
