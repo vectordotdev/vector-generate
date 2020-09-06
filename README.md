@@ -1,89 +1,50 @@
 # Vector Generate
 
-Repository for generating files across all of Vector's repos located in the
-[`targets` directory](/targets).
-
-## Usage
-
-With Docker:
-
-```bash
-docker build --tag vector-generate .
-docker run \
-  -v `pwd`:/usr/app \
-  -u $UID:$GID \
-  -it vector-generate
-```
-
-Or without Docker:
-
-```bash
-./main.rb
-```
-
-## What?
-
-This repository contains a single script ([`/main.rb`](/main.rb)) that generates
-files across various Vector repositories ([`/targets/*`](/targets)) from the
-Vector metadata ([`/.meta`](/.meta)).
+A library used for generating `.erb` templates across various Vector
+repositories using [Vector's `.meta` data][vector_metadata].
 
 ## Why?
 
-Vector is a large project that covers a lot of surface area. In order to
-document and market Vector we need to create a lot of different documents:
-
-1. The [Vector reference docs][vector_reference].
-2. The [Vector components page][vector_components].
-3. Listing all of the components on the [Vector README][vector_readme].
-4. [Deriving Gihub labels and settings][vector_management_locals] from this data.
-5. and more...
-
-Instead of manually creating all of these pages, which is error prone, we
-generate them. This ensures that these pages are accurate, consistent, and
-decoupled from the underlying system, affording us the ability to quickly
-iterate and improve them.
-
-### Example 1: The Vector reference docs
-
-For example, the [Vector reference docs][vector_reference] contain over 150
-pages that contain detailed configuration information for all of Vector's
-components. All of these pages have evolved over time, something that would not
-be easily possible otherwise.
-
-### Example 2: Migrating the Vector website
-
-We've migrated the Vector website 3 times to ensure it delivers a good UX.
-For Vector, the docs play a critical role in achieving this and we are afforded
-this agility through documentation generation. Baking all of this data into
-markdown files would make it difficult and time consuming to do this.
+[Vector's `.meta` directory][vector_metadata] contains structured data about
+Vector itself. This data is used to generate documentation, configuration
+examples, and other content. Coupling this metadata with Vector allows
+contributors to couple metadata changes with their code. This means contributors
+can maintain documentation, and other documents, without having to worry about
+styling or presentation of this data.
 
 ## How?
 
-1. [`main.rb`](/main.rb) is the main executable.
-2. Upon execution it first loads all of the metdata in the [`.meta`](/.meta)
-   folder.
-   1. You'll notice that the Vector repo is loaded here as a Git submodule.
-      We do this to load in Vector's own metadata via the `.meta/vector/meta`
-      directory. This allows us to keep the Vector metadata in the main Vector
-      repo while still using it here. We like this process because developers
-      can still couple metdata changes with their code.
-3. Once the metadata is loaded we traverse each of the [`target`](/target)
-   subdirectories and look for `.erb` templates and render these templates
-   in the context of the loaded metadata. The rendered template is placed in the
-   same path as the template without the `.erb` extension.
+This library is intended to be used like a Ruby gem. The
+[`vector-website`][vector_website_repo] repo demonstrates how this is done:
+
+1. Define a [`Gemfile`][vector_website_gemfile] that includes this library.
+2. Define a [Ruby file][vector_website_generate] (usually called `generate.rb`)
+   that uses this library accordingly.
+3. Ensure this file is executable so it can be called directly.
+4. Notice that this Ruby file loads the Vector metadata. How it accesses the
+   data is up to you. A common practice is to load the
+   [`vector` repo][vector_repo] as a submodule, so that this script can access
+   the contained `.meta` directory.
+
+## Future Intent
+
+The Ruby gem approach allows each repository to optionally use this library as
+needed. It is intended that we'll phase this library out as each repository
+works with Vector's metadata directly, ultimately removing the need for this
+library entirely.
 
 ## History
 
 Finally, it's worth noting some history on this system. What you see here is
 not the result of some carefully crafted master plan. This system evolved over
 time as a means to an end. It initially started as a simple script to help with
-documentation, and evolved into something much larger over time. We've taken
-care to organize the code and keep it clean, but there is certainly room for
+documentation since Vector was using Gitbook at the time. It then evolved into
+something larger as Vector's documentation system evolved. We've taken care to
+organize the code and keep it clean, but there is certainly room for
 improvement.
 
-[vector_components]: https://vector.dev/components/
-[vector_management_locals]: https://github.com/timberio/vector-management/blob/master/github/locals_generated.tf.erb
-[vector_readme]: https://github.com/timberio/vector/blob/master/README.md
+[vector_metdata]: https://github.com/timberio/vector/tree/master/.meta
 [vector_repo]: https://github.com/timberio/vector
-[vector_reference]: https://vector.dev/docs/reference/
+[vector_website_gemfile]: https://github.com/timberio/vector-website/blob/master/scripts/Gemfile
+[vector_website_generate]: https://github.com/timberio/vector-website/blob/master/scripts/generate.rb
 [vector_website_repo]: https://github.com/timberio/vector-website
