@@ -43,7 +43,7 @@ something larger as Vector's documentation system evolved. We've taken care to
 organize the code and keep it clean, but there is certainly room for
 improvement.
 
-[vector_metdata]: https://github.com/timberio/vector/tree/master/.meta
+[vector_metadata]: https://github.com/timberio/vector/tree/master/.meta
 [vector_repo]: https://github.com/timberio/vector
 [vector_website_gemfile]: https://github.com/timberio/vector-website/blob/master/scripts/Gemfile
 [vector_website_generate]: https://github.com/timberio/vector-website/blob/master/scripts/generate.rb
