@@ -8,7 +8,6 @@ module VectorGenerate
     	def load!(dir)
     		Dir.
           glob("#{dir}/**/*.md").
-          filter { |path| File.read(path).start_with?("---\n") || File.read(path).start_with?("\n<!--\n") }.
           collect { |path| parse_file!(dir, path) }.
           sort_by { |hash| [ hash.fetch("id") ] }
     	end
