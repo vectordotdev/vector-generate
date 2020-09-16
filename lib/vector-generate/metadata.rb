@@ -41,7 +41,7 @@ module VectorGenerate
       :team,
       :transforms
 
-    def initialize(meta_data, docs_data, guides_data, highlights_data, pages_data, posts_data)
+    def initialize(meta_data, docs_data: {}, guides_data: {}, highlights_data: {}, pages_data: {}, posts_data: {})
       @data_model = DataModel.new(meta_data.fetch("data_model"))
       @domains = meta_data.fetch("domains").collect { |h| OpenStruct.new(h) }
       @guides = guides_data.to_struct_with_name(constructor: Guides)
@@ -122,6 +122,8 @@ module VectorGenerate
       # links
 
       links_meta = meta_data.fetch("links").deep_merge(meta_data["links"] || {})
+
+      docs_data.collect { |d| d.fetch("permalink") }
 
       permalinks =
         {

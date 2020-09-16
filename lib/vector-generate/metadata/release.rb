@@ -44,61 +44,61 @@ module VectorGenerate
 
         # requirements
 
-        @commits.each do |commit|
-          if commit.breaking_change?
-            if !@highlights.any? { |h| h.type?("breaking change") && h.pr_numbers.include?(commit.pr_number) }
-              tags = ["type: breaking change"]
+        # @commits.each do |commit|
+        #   if commit.breaking_change?
+        #     if !@highlights.any? { |h| h.type?("breaking change") && h.pr_numbers.include?(commit.pr_number) }
+        #       tags = ["type: breaking change"]
 
-              commit.scopes.each do |scope|
-                if scope.component
-                  tags << "domain: #{scope.component.type.pluralize}"
-                  tags << "#{scope.component.type}: #{scope.component.name}"
-                end
-              end
+        #       commit.scopes.each do |scope|
+        #         if scope.component
+        #           tags << "domain: #{scope.component.type.pluralize}"
+        #           tags << "#{scope.component.type}: #{scope.component.name}"
+        #         end
+        #       end
 
-              raise ArgumentError.new(
-                <<~EOF
-                Release #{@version} contains breaking commits without an upgrade guide!
+        #       raise ArgumentError.new(
+        #         <<~EOF
+        #         Release #{@version} contains breaking commits without an upgrade guide!
 
-                  * Commiit #{commit.sha_short} - #{commit.description}
+        #           * Commiit #{commit.sha_short} - #{commit.description}
 
-                Please add the following breaking change at:
+        #         Please add the following breaking change at:
 
-                  website/highlights/#{commit.date.to_date.to_s}-#{commit.description.parameterize}.md
+        #           website/highlights/#{commit.date.to_date.to_s}-#{commit.description.parameterize}.md
 
-                With the following content:
+        #         With the following content:
 
-                ---
-                $schema: ".schema.json"
-                title: "#{commit.description}"
-                description: "<fill-in>"
-                author_github: "https://github.com/binarylogic"
-                hide_on_release_notes: false
-                pr_numbers: [#{commit.pr_number}]
-                release: "#{@version}"
-                tags: #{tags.to_json}
-                ---
+        #         ---
+        #         $schema: ".schema.json"
+        #         title: "#{commit.description}"
+        #         description: "<fill-in>"
+        #         author_github: "https://github.com/binarylogic"
+        #         hide_on_release_notes: false
+        #         pr_numbers: [#{commit.pr_number}]
+        #         release: "#{@version}"
+        #         tags: #{tags.to_json}
+        #         ---
 
-                Explain the change and the reasoning here.
+        #         Explain the change and the reasoning here.
 
-                ## Upgrade Guide
+        #         ## Upgrade Guide
 
-                Make the following changes in your `vector.toml` file:
+        #         Make the following changes in your `vector.toml` file:
 
-                ```diff title="vector.toml"
-                 [sinks.example]
-                   type = "example"
-                -  remove = "me"
-                +  add = "me"
-                ```
+        #         ```diff title="vector.toml"
+        #          [sinks.example]
+        #            type = "example"
+        #         -  remove = "me"
+        #         +  add = "me"
+        #         ```
 
-                That's it!
+        #         That's it!
 
-                EOF
-              )
-            end
-          end
-        end
+        #         EOF
+        #       )
+        #     end
+        #   end
+        # end
       end
 
       def <=>(other)

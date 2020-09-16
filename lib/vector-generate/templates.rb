@@ -8,7 +8,7 @@ module VectorGenerate
 
   	attr_reader :metadata, :partials_dir
 
-  	def initialize(metadata, partials_dir)
+  	def initialize(metadata, partials_dir=nil)
       @metadata = metadata
       @partials_dir = partials_dir
     end
