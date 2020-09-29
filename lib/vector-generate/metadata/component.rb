@@ -221,7 +221,7 @@ module VectorGenerate
           logo_path: logo_path,
           name: name,
           operating_systems: (transform? ? [] : operating_systems),
-          options: options_list.deep_to_h,
+          options: options.deep_to_h,
           requirements: requirements.deep_to_h,
           service_providers: service_providers,
           short_description: (short_description ? short_description.remove_markdown_links : nil),
