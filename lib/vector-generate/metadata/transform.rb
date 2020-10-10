@@ -71,7 +71,7 @@ module VectorGenerate
       end
 
       def log_fields_list
-        @log_fields_list ||= fields.log.to_h.values.sort
+        @log_fields_list ||= fields.log.fields_list
       end
 
       def to_h
