@@ -71,7 +71,7 @@ module VectorGenerate
       end
 
       def log_fields_list
-        @log_fields_list ||= fields.log.fields_list
+        @log_fields_list ||= fields.logs ? fields.log.fields_list : []
       end
 
       def to_h
