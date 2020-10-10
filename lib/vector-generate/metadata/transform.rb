@@ -66,8 +66,7 @@ module VectorGenerate
         end
       end
 
-      prettif
-      _description
+      def short_description
         @short_description ||= "Accepts #{input_types.to_sentence} events and allows you to #{allow_you_to_description}."
       end
 
