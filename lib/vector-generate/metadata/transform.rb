@@ -66,8 +66,13 @@ module VectorGenerate
         end
       end
 
-      def short_description
+      prettif
+      _description
         @short_description ||= "Accepts #{input_types.to_sentence} events and allows you to #{allow_you_to_description}."
+      end
+
+      def log_fields_list
+        @log_fields_list ||= fields.log.to_h.values.sort
       end
 
       def to_h
