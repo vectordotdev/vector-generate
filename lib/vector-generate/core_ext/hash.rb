@@ -12,7 +12,8 @@ class Hash
           h["#{k}.#{h_k}"] = h_v
         end
       else
-        h[k] = v
+        quoted = k.include?(".") ? k.inspect : k
+        h[quoted] = v
       end
     end
   end

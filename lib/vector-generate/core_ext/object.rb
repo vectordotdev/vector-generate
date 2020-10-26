@@ -32,7 +32,7 @@ class Object
         (hash_style == :flatten ? flatten : self).
           select { |_k, v| !v.nil? }.
           collect do |k, v|
-            "#{quote_toml_key(k)} = #{v.to_toml(hash_style: :inline)}"
+            "#{!flatten ? quote_toml_key(k) : k} = #{v.to_toml(hash_style: :inline)}"
           end
 
       if hash_style == :inline
@@ -60,6 +60,12 @@ class Object
         EOF
 
       result.chomp
+    elsif is_a?(String)
+      begin
+        Time.iso8601(self).to_toml
+      rescue ArgumentError
+        inspect
+      end
     elsif is_primitive_type?
       inspect
     else

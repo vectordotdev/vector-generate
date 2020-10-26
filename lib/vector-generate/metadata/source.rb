@@ -27,7 +27,7 @@ module VectorGenerate
         @noun = hash.fetch("noun")
         @output_types = hash.fetch("output_types")
         @strategies = hash["strategies"] || []
-        @through_description = hash.fetch("through_description")
+        @through_description = hash["through_description"] || ""
 
         # fields
 
@@ -39,12 +39,6 @@ module VectorGenerate
 
         if fields["metric"]
           @fields.metric = Fields.new(fields["metric"])
-        end
-
-        # through_description
-
-        if @through_description.strip[-1] == "."
-          raise("#{self.class.name}#through_description cannot not end with a period")
         end
       end
 

@@ -17,14 +17,19 @@ module VectorGenerate
         :examples,
         :features,
         :function_category,
+        :how_it_works,
         :id,
         :name,
+        :new_features,
         :operating_systems,
         :options,
         :permissions,
         :posts,
         :requirements,
+        :requirements_list,
         :service_providers,
+        :short_description,
+        :support,
         :title,
         :type,
         :unsupported_operating_systems
@@ -37,11 +42,16 @@ module VectorGenerate
         @examples = (hash["examples"] || []).collect { |e| Example.new(e) }
         @features = hash["features"] || []
         @function_category = hash.fetch("function_category").downcase
+        @how_it_works = hash["how_it_works"] || {}
         @name = hash.fetch("name")
+        @new_features = hash["new_features"] || {}
         @permissions = (hash["permissions"] || {}).to_struct_with_name(constructor: Permission)
         @posts = hash.fetch("posts")
         @requirements = OpenStruct.new(hash["requirements"] || {})
+        @requirements_list = hash["requirements_list"] || []
         @service_providers = hash["service_providers"] || []
+        @short_description = hash["short_description"]
+        @support = hash["support"]
         @title = hash.fetch("title")
         @type ||= self.class.name.split("::").last.downcase
         @id = "#{@name}_#{@type}"

@@ -20,14 +20,14 @@ module VectorGenerate
 
         @delivery_guarantee = hash.fetch("delivery_guarantee")
         @egress_method = hash.fetch("egress_method")
-        @healthcheck = hash.fetch("healthcheck")
+        @healthcheck = hash["healthcheck"]
         @input_types = hash.fetch("input_types")
         @noun = hash.fetch("noun")
         @service_limits_short_link = hash["service_limits_short_link"]
-        @write_to_description = hash.fetch("write_to_description")
+        @write_to_description = hash["write_to_description"]
 
-        if @write_to_description.strip[-1] == "."
-          raise("#{self.class.name}#write_to_description cannot not end with a period")
+        if @write_to_description && @write_to_description.strip[-1] == "."
+          raise("#{self.class.name}#write_to_description cannot not end with a period (#{name})")
         end
       end
 
@@ -77,7 +77,7 @@ module VectorGenerate
         super.merge(
           input_types: input_types,
           noun: noun,
-          write_to_description: write_to_description.remove_markdown_links
+          write_to_description: (write_to_description || "").remove_markdown_links
         )
       end
 

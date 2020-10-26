@@ -34,28 +34,28 @@ module VectorGenerate
           value = nil
 
           if hash.values.first.is_a?(Hash)
-            hash = hash.flatten
-            key = hash.keys.first
-            value = hash.values.first
+            hash.flatten.each do |key, value|
+              kv(key, value, path: path, tags: tags)
+            end
           elsif hash.keys.first.include?(".")
             key = hash.keys.first.inspect
             value = hash.values.first
+            kv(key, value, path: path, tags: tags)
           else
             key = hash.keys.first
             value = hash.values.first
+            kv(key, value, path: path, tags: tags)
           end
-
-          kv(key, value, path: path, tags: tags)
         end
 
         def indent(spaces)
           @indent += spaces
         end
 
-        def kv(key, value, path: [], tags: [])
+        def kv(key, value, path: [], tags: [], hash_style: :inline)
           quoted_key = key.include?(" ") ? key.to_toml : key
           full_key = (path + [quoted_key]).join(PATH_DELIMITER)
-          line = "#{full_key} = #{value.to_toml(hash_style: :inline)}"
+          line = "#{full_key} = #{value.to_toml(hash_style: hash_style)}"
 
           if !line.include?("\n") && tags.any?
             line << " # #{tags.join(", ")}"
@@ -190,7 +190,7 @@ module VectorGenerate
 
           if relevant_when && field.relevant_when
             word = field.required? ? "required" : "relevant"
-            tag = "#{word} when #{field.relevant_when_kvs.to_sentence(two_words_connector: " or ")}"
+            tag = "#{word} when #{field.relevant_when}"
             tags << tag
           end
 

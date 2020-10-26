@@ -90,7 +90,24 @@ module VectorGenerate
 
         # category
 
-        @category = hash["category"] || ((@children.to_h.values.empty?) ? "General" : @name.humanize)
+        @category = hash["category"] || ((@children.to_h.values.empty?) ? "General" : @name.titleize)
+
+        # relevant_when
+
+        if @relevant_when && !@relevant_when.is_a?(String)
+          @relevant_when =
+            relevant_when.collect do |k, v|
+              if v.is_a?(Array)
+                v.collect do |sub_v|
+                  "#{k} = #{sub_v.to_toml}"
+                end
+              else
+                "#{k} = #{v.to_toml}"
+              end
+            end.flatten.to_sentence(two_words_connector: " or ")
+        elsif @relevant_when == false
+          @relevant_when = nil
+        end
 
         # Requirements
 
@@ -102,8 +119,8 @@ module VectorGenerate
           raise ArgumentError.new("#{@name}.required must be false if there is a default")
         end
 
-        if wildcard? && !object?
-          if !@examples.any? { |example| example.is_a?(Hash) }
+        if wildcard? && !object? && @examples.any?
+          if !@examples.all? { |example| example.is_a?(Hash) }
             raise ArgumentError.new("#{@name}#examples must be a hash with name/value keys when the name is \"*\"")
           end
         end
@@ -112,8 +129,8 @@ module VectorGenerate
           raise ArgumentError.new("#{@name}.examples is invalid, remove it or match it exactly with the enum values")
         end
 
-        if !@relevant_when.nil? && !@relevant_when.is_a?(Hash)
-          raise ArgumentError.new("#{@name}.relevant_when must be a hash of conditions")
+        if !@relevant_when.nil? && !@relevant_when.is_a?(String)
+          raise ArgumentError.new("#{@name}.relevant_when must be a string, got a #{@relevant_when.inspect}")
         end
 
         # Examples
@@ -140,12 +157,6 @@ module VectorGenerate
                 DateTime.iso8601(example)
               end
             )
-        end
-
-        # Requirements
-
-        if @examples.empty? && !wildcard? && @children.empty? && !object? && !array_of_objects?
-          raise "#{@name}#examples is required if a #default is not specified"
         end
       end
 
@@ -244,7 +255,7 @@ module VectorGenerate
       end
 
       def group?(group_name)
-        if group_name.nil?
+        if group_name.nil? || groups.empty?
           true
         else
           groups.any? do |group|
@@ -271,18 +282,6 @@ module VectorGenerate
 
       def relevant_when?
         !relevant_when.nil?
-      end
-
-      def relevant_when_kvs
-        relevant_when.collect do |k, v|
-          if v.is_a?(Array)
-            v.collect do |sub_v|
-              "#{k} = #{sub_v.to_toml}"
-            end
-          else
-            "#{k} = #{v.to_toml}"
-          end
-        end.flatten
       end
 
       def required?
@@ -316,7 +315,7 @@ module VectorGenerate
       end
 
       def wildcard?
-        name.start_with?("`[")
+        name.start_with?("`[") || name.start_with?("<") || name == "*"
       end
     end
   end

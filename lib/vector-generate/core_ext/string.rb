@@ -3,32 +3,34 @@ require 'word_wrap/core_ext'
 
 class String
   def capitalize_first
-    self[0].capitalize + self[1..-1]
+    "#{self}"[0].capitalize + self[1..-1]
   end
 
   # Comments out a block of text
   def commentify
-    "# " + self.gsub("\n", "\n# ")
+    "# " + clone.gsub("\n", "\n# ")
   end
 
   # Downcases the first letter, even if it has markdown syntax
   def continuize
     i = 0
 
+    string = "#{self}"
+
     loop do
-      if i > self.length
+      if i > string.length
         break
       end
 
-      if self[i] != "["
-        self[i] = self[i].downcase
+      if string[i] != "["
+        string[i] = string[i].downcase
         break
       end
 
       i = i+1
     end
 
-    self
+    string
   end
 
   def editorify(width = 80)
@@ -60,6 +62,7 @@ class String
 
   def remove_markdown_links
     self.
+      clone.
       gsub(/\[([^\]]+)\]\(([^) ]+)\)/, '\1').
       gsub(/\[([^\]]+)\]\[([^) ]+)\]/, '\1')
   end

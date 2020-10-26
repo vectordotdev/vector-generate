@@ -108,12 +108,14 @@ module VectorGenerate
 
         sink =
           case sink_hash.fetch("egress_method")
-          when "batching"
+          when "batching", "batch"
             BatchingSink.new(sink_hash)
-          when "exposing"
+          when "aggregate", "exposing", "expose"
             ExposingSink.new(sink_hash)
-          when "streaming"
+          when "streaming", "stream"
             StreamingSink.new(sink_hash)
+          else
+            raise "Bad method! #{sink_hash.fetch("egress_method").inspect}"
           end
 
         @sinks.send("#{sink_name}=", sink)

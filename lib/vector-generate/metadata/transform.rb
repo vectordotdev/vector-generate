@@ -16,16 +16,10 @@ module VectorGenerate
 
         # init
 
-        @allow_you_to_description = hash.fetch("allow_you_to_description")
+        @allow_you_to_description = hash["allow_you_to_description"]
         @fields = OpenStruct.new
         @input_types = hash.fetch("input_types")
         @output_types = hash.fetch("output_types")
-
-        # checks
-
-        if @allow_you_to_description.strip[-1] == "."
-          raise("#{self.class.name}#allow_you_to_description cannot not end with a period")
-        end
 
         # fields
 
@@ -36,7 +30,7 @@ module VectorGenerate
         end
 
         if fields["metric"]
-          @fields.metric = Output.new(fields["metric"])
+          @fields.metric = Fields.new(fields["metric"])
         end
       end
 
