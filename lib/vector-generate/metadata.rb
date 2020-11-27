@@ -9,6 +9,7 @@ require_relative "metadata/field"
 require_relative "metadata/guides"
 require_relative "metadata/highlight"
 require_relative "metadata/installation"
+require_relative "metadata/installation2"
 require_relative "metadata/links"
 require_relative "metadata/post"
 require_relative "metadata/release"
@@ -24,13 +25,16 @@ module VectorGenerate
   # This represents the /.meta directory in object form. Sub-classes represent
   # each sub-component.
   class Metadata
-    attr_reader :blog_posts,
+    attr_reader :api,
+      :blog_posts,
+      :cli,
       :data_model,
       :domains,
       :env_vars,
       :guides,
       :highlights,
       :installation,
+      :installation2,
       :links,
       :options,
       :tests,
@@ -42,11 +46,15 @@ module VectorGenerate
       :transforms
 
     def initialize(meta_data, docs_data: {}, guides_data: {}, highlights_data: {}, pages_data: {}, posts_data: {})
+      @api = meta_data.fetch("api").to_struct
+      @api["configuration"] = @api.configuration.to_h.to_struct_with_name(constructor: Field)
+      @cli = meta_data.fetch("cli").to_struct
       @data_model = DataModel.new(meta_data.fetch("data_model"))
       @domains = meta_data.fetch("domains").collect { |h| OpenStruct.new(h) }
       @guides = guides_data.to_struct_with_name(constructor: Guides)
       @highlights = highlights_data.collect { |hash| Highlight.new(hash) }
       @installation = Installation.new(meta_data.fetch("installation"))
+      @installation2 = Installation2.new(meta_data.fetch("installation2"))
       @options = meta_data.fetch("options").to_struct_with_name(constructor: Field)
       @posts = posts_data.collect { |hash| Post.new(hash) }
       @releases = OpenStruct.new()
@@ -248,10 +256,6 @@ module VectorGenerate
       @releases_list ||= @releases.to_h.values.sort
     end
 
-    def relesed_versions
-      releases
-    end
-
     def service_providers
       @service_providers ||= components.collect(&:service_providers).flatten.uniq
     end
@@ -268,7 +272,7 @@ module VectorGenerate
       {
         event_types: event_types,
         guides: guides.deep_to_h,
-        installation: installation.deep_to_h,
+        installation: installation2.deep_to_h,
         latest_highlight: highlights.last.deep_to_h,
         latest_post: posts.last.deep_to_h,
         latest_release: latest_release.deep_to_h,
@@ -285,6 +289,27 @@ module VectorGenerate
 
     def transforms_list
       @transforms_list ||= transforms.to_h.values.sort
+    end
+
+    def versions(dynamic: false)
+      return @versions if defined?(@versions)
+
+      versions = releases.to_h.keys.collect { |v| Version.new(v) }.sort
+
+      @versions =
+        if dynamic
+          arr =
+            versions.
+              collect { |v| [v.major_x, v.minor_x] }.
+              flatten.
+              uniq
+
+          arr << "latest"
+
+          arr.reverse
+        else
+          versions.collect(&:to_s)
+        end
     end
   end
 end

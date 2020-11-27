@@ -1,27 +1,18 @@
-require_relative "log"
-require_relative "metric"
+require_relative "field"
 
 module VectorGenerate
 	class Metadata
 		class DataModel
 		  TYPES = ["log", "metric"].freeze
 
-		  attr_reader :log, :metric
+		  attr_reader :schema
 
 		  def initialize(hash)
-		    @log = Log.new(hash.fetch("log"))
-		    @metric = Metric.new(hash.fetch("metric"))
-		  end
-
-		  def to_h
-		  	{
-		  		log: log.deep_to_h,
-		  		metric: metric.deep_to_h
-		  	}
+        @schema = hash.fetch("schema").to_struct_with_name(constructor: Field)
 		  end
 
 		  def types
-		    TYPES
+		  	TYPES
 		  end
 		end
 	end

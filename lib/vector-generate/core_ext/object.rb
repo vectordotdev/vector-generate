@@ -60,6 +60,8 @@ class Object
         EOF
 
       result.chomp
+    elsif is_a?(String) && include?("\\")
+      "'#{self}'"
     elsif is_a?(String)
       begin
         Time.iso8601(self).to_toml

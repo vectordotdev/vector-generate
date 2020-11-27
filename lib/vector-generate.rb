@@ -20,7 +20,7 @@ module VectorGenerate
   GUIDES_PATH = "/guides"
   HIGHLIGHTS_PATH = "/highlights"
   HOST = "https://vector.dev"
-  OPERATING_SYSTEMS = ["Linux", "MacOS", "Windows"].freeze
+  OPERATING_SYSTEMS = ["Linux", "macOS", "Windows"].freeze
   POSTS_PATH = "/blog"
 
   def self.render_templates(root_dir, templates, relative_link_paths)
@@ -32,7 +32,8 @@ module VectorGenerate
         to_a.
         filter { |path| !path.include?("/.meta/") }.
         filter { |path| !path.include?("/_partials/") }.
-        filter { |path| !path.include?("/scripts/generate/") }
+        filter { |path| !path.include?("/scripts/generate/") }.
+        filter { |path| !path.include?("/vector/") }
 
     Printer.say("Found #{template_paths.size} templates to render")
 

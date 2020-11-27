@@ -4,14 +4,40 @@ module VectorGenerate
       extend self
 
       def load!(dir)
-        json = `cue export #{dir}/docs/*.cue #{dir}/docs/reference/*.cue #{dir}/docs/reference/components/*.cue #{dir}/docs/reference/data_model/*.cue #{dir}/docs/reference/components/sources/*.cue #{dir}/docs/reference/components/transforms/*.cue #{dir}/docs/reference/components/sinks/*.cue`
+        cmd = "cue export #{dir}/docs/*.cue " +
+          "#{dir}/docs/reference/*.cue " +
+          "#{dir}/docs/reference/components/*.cue " +
+          "#{dir}/docs/reference/data_model/*.cue " +
+          "#{dir}/docs/reference/installation/*.cue " +
+          "#{dir}/docs/reference/installation/_interfaces/*.cue " +
+          "#{dir}/docs/reference/installation/operating_systems/*.cue " +
+          "#{dir}/docs/reference/installation/platforms/*.cue " +
+          "#{dir}/docs/reference/releases/*.cue " +
+          "#{dir}/docs/reference/remap/*.cue " +
+          "#{dir}/docs/reference/components/sources/*.cue " +
+          "#{dir}/docs/reference/components/transforms/*.cue " +
+          "#{dir}/docs/reference/components/sinks/*.cue " +
+          "#{dir}/docs/reference/services.cue " +
+          "#{dir}/docs/reference/services/*.cue"
+
+        json = `#{cmd}`
         ref = JSON.parse(json)
         ref_components = ref.fetch("components")
+        api = ref.fetch("api")
+        api["configuration"] = transform_schema(api.fetch("configuration"))
 
         meta = {
+          "api" => api,
+          "cli" => ref.fetch("cli"),
+          "data_model" => {
+            "schema" => transform_schema(ref.fetch("data_model").fetch("schema"))
+          },
+          "installation" => ref.fetch("installation"),
+          "releases" => ref.fetch("releases"),
           "sources" => {},
           "transforms" => {},
           "sinks" => {},
+          "team" => ref.fetch("team"),
           "urls" => ref.fetch("urls")
         }
 
@@ -61,6 +87,7 @@ module VectorGenerate
               "requirements" => {},
               "requirements_list" => component["requirements"] || [],
               "support" => component.fetch("support"),
+              "telemetry" => component["telemetry"],
               "options" => {}
             }
 
@@ -69,7 +96,7 @@ module VectorGenerate
           end
 
           if platforms.fetch("x86_64-apple-darwin")
-            new_component["only_operating_systems"] << "MacOS"
+            new_component["only_operating_systems"] << "macOS"
           end
 
           if platforms.fetch("x86_64-pc-windows-msv")
@@ -107,19 +134,21 @@ module VectorGenerate
             new_component["output_types"] << "metric"
           end
 
+          types = new_component["input_types"] || new_component["output_types"] || []
+
           from = features.fetch(function)["from"]
           format = features.fetch(function)["format"]
           runtime = features.fetch(function)["runtime"]
           to = features.fetch(function)["to"]
-
           target = from || format || runtime || to || {}
-          types = new_component["input_types"] || new_component["output_types"] || []
-          thing = target["thing"] || target["name"]
-          url = target["url"]
-          versions = target["versions"]
+          service = target["service"] || {}
+          service_name = service["name"]
+          thing = service["thing"] || service["name"]
+          url = service["url"]
+          versions = service["versions"]
 
           new_component["noun"] = thing
-          new_component["short_description"] = "#{function.pluralize.sub(/^./, &:upcase)} #{types.collect(&:pluralize).join(" and ")}" + (thing ? ((!to.nil? ? " to " : " from ") + (url ? "[#{thing}](#{url})." : "#{thing}")) : "").freeze
+          new_component["short_description"] = "#{function.pluralize.sub(/^./, &:upcase)} #{types.collect(&:pluralize).join(" and ")}" + (service_name ? ((!to.nil? ? " to " : " from ") + (url ? "[#{service_name}](#{url})." : "#{service_name}")) : "").freeze
 
           new_component["features"] ||= []
           new_component["features"] << new_component["short_description"]
@@ -129,7 +158,7 @@ module VectorGenerate
           end
 
           if versions
-            new_component["requirements_list"] << (url ? "[#{thing}](#{url})" : "#{thing}") + " #{versions} is required."
+            new_component["requirements_list"] << (url ? "[#{service_name}](#{url})" : "#{service_name}") + " #{versions} is required."
           end
 
           if component.fetch("kind") != "source"
@@ -331,6 +360,16 @@ module VectorGenerate
               #{output_text}
               EOF
           }
+        end
+
+        def transform_schema(schema)
+          transformed_schema = {}
+
+          schema.each do |name, option|
+            transformed_schema[name] = transform_option(option)
+          end
+
+          transformed_schema
         end
     end
   end

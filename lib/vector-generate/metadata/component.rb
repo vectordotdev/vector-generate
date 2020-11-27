@@ -4,6 +4,7 @@ require_relative "../config_writers/example_writer"
 require_relative "example"
 require_relative "field"
 require_relative "permission"
+require_relative "telemetry"
 
 module VectorGenerate
   class Metadata
@@ -30,6 +31,7 @@ module VectorGenerate
         :service_providers,
         :short_description,
         :support,
+        :telemetry,
         :title,
         :type,
         :unsupported_operating_systems
@@ -50,8 +52,9 @@ module VectorGenerate
         @requirements = OpenStruct.new(hash["requirements"] || {})
         @requirements_list = hash["requirements_list"] || []
         @service_providers = hash["service_providers"] || []
-        @short_description = hash["short_description"]
+        @short_description = hash.fetch("short_description")
         @support = hash["support"]
+        @telemetry = hash["telemetry"] ? Telemetry.new(hash.fetch("telemetry")) : nil
         @title = hash.fetch("title")
         @type ||= self.class.name.split("::").last.downcase
         @id = "#{@name}_#{@type}"
@@ -79,18 +82,17 @@ module VectorGenerate
       end
 
       def config_example(format)
-        id = type == "source" ? "in" : "out"
-
         writer =
           ConfigWriters::ExampleWriter.new(
-            options_list,
-            table_path: [type.pluralize, id],
-            values: {inputs: ["in"]}
+            options_list.sort_by(&:config_sort_obj),
+            table_path: [type.pluralize, name],
           ) do |option|
             option.required?
           end
 
         case format
+        when :hash
+          writer.to_h
         when :toml
           writer.to_toml
         else
@@ -128,7 +130,7 @@ module VectorGenerate
       end
 
       def for_platform?
-        !requirements.docker_api.nil? || requirements.heroku == true
+        name == "docker_logs" || name == "kubernetes_logs"
       end
 
       def field_path_notation_options
@@ -218,9 +220,6 @@ module VectorGenerate
         {
           beta: beta?,
           common: common,
-          config_examples: {
-            toml: config_example(:toml)
-          },
           delivery_guarantee: (respond_to?(:delivery_guarantee, true) ? delivery_guarantee : nil),
           description: (description ? description.remove_markdown_links : nil),
           env_vars: env_vars_list.deep_to_h,

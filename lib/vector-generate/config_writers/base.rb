@@ -53,9 +53,11 @@ module VectorGenerate
         end
 
         def kv(key, value, path: [], tags: [], hash_style: :inline)
-          quoted_key = key.include?(" ") ? key.to_toml : key
+          return if value.nil?
+          quoted_key = key.include?(" ") || key.include?("*") ? key.to_toml : key
           full_key = (path + [quoted_key]).join(PATH_DELIMITER)
-          line = "#{full_key} = #{value.to_toml(hash_style: hash_style)}"
+          toml_value = value.to_toml(hash_style: hash_style)
+          line = "#{full_key} = #{toml_value}"
 
           if !line.include?("\n") && tags.any?
             line << " # #{tags.join(", ")}"
@@ -115,6 +117,18 @@ module VectorGenerate
 
       def categories
         @categories ||= fields.collect(&:category).uniq
+      end
+
+      def to_h
+        @to_h ||= TomlRB.parse(to_toml)
+      end
+
+      def to_json
+        @to_json ||= JSON.neat_generate(to_h, around_colon: 1, padding: 1, sort: true, wrap: 10)
+      end
+
+      def to_yaml
+        @to_yaml ||= to_h.to_yaml
       end
 
       def to_toml(table_style: :normal)

@@ -27,19 +27,18 @@ module VectorGenerate
 
       def initialize(attributes)
         @author = attributes.fetch("author")
+        @breaking_change = attributes.fetch("breaking_change")
         @deletions_count = attributes["deletions_count"] || 0
+        @description = attributes.fetch("description")
         @files_count = attributes.fetch("files_count")
         @date = attributes.fetch("date")
         @insertions_count = attributes["insertions_count"] || 0
-        @message = attributes.fetch("message")
+        @pr_number = attributes["pr_number"]
+        @scopes = (attributes["scopes"] || []).collect { |s| CommitScope.new(s) }
         @sha = attributes.fetch("sha")
+        @type = attributes.fetch("type")
 
-        message_attributes = parse_commit_message!(@message)
-        @breaking_change = message_attributes.fetch("breaking_change")
-        @description = message_attributes.fetch("description")
-        @pr_number = message_attributes["pr_number"]
-        @scopes = (message_attributes["scopes"] || []).collect { |s| CommitScope.new(s) }
-        @type = message_attributes.fetch("type")
+        @message = "#{type}(#{scopes.collect(&:name).join(", ")}: #{description} (##{pr_number})"
       end
 
       def breaking_change?
@@ -122,66 +121,6 @@ module VectorGenerate
       def transform?
         component_type == "transform"
       end
-
-      private
-        def parse_commit_message!(message)
-          match = message.match(/^(?<type>[a-z]*)(\((?<scope>[a-z0-9_, ]*)\))?(?<breaking_change>!)?: (?<description>.*?)( \(#(?<pr_number>[0-9]*)\))?$/)
-
-          if match.nil?
-            raise <<~EOF
-            Commit message does not conform to the conventional commit format.
-
-            Unable to parse at all!
-
-              #{message}
-
-            Please correct in the release /.meta file and retry.
-            EOF
-          end
-
-          attributes =
-            {
-              "type" => match[:type],
-              "breaking_change" => !match[:breaking_change].nil?,
-              "description" => match[:description]
-            }
-
-          if match[:scope]
-            attributes["scopes"] = match[:scope].split(",").collect(&:strip)
-          end
-
-          if match[:pr_number]
-            attributes["pr_number"] = match[:pr_number].to_i
-          end
-
-          type = attributes.fetch("type")
-          scopes = attributes["scopes"]
-
-          if !type.nil? && !TYPES.include?(type)
-            raise <<~EOF
-            Commit has an invalid type!
-            The type must be one of #{TYPES.inspect}.
-
-              #{type.inspect}
-
-            Please correct in the release /.meta file and retry.
-            EOF
-          end
-
-          if TYPES_THAT_REQUIRE_SCOPES.include?(type) && scopes.empty?
-            raise <<~EOF
-            Commit does not have a scope!
-
-            A scope is required for commits of type #{TYPES_THAT_REQUIRE_SCOPES.inspect}.
-
-              #{description}
-
-            Please correct in the release /.meta file and retry.
-            EOF
-          end
-
-          attributes
-        end
     end
   end
 end

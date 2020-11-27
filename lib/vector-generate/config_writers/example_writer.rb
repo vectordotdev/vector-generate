@@ -11,11 +11,12 @@ module VectorGenerate
         end
 
         sorted_categories = fields.collect(&:category).uniq
+        show_categories = sorted_categories.size > 1
 
         sorted_categories.each do |category|
           category_fields = fields.select { |field| field.category == category }
 
-          if sorted_categories.size > 1
+          if show_categories
             writer.category(category)
           end
 

@@ -8,10 +8,6 @@ module VectorGenerate
 		  def strip(content)
 	      content.strip
 	    end
-
-		  def vector_summary
-		    render("#{partials_dir}/_vector_summary.md", binding).strip
-		  end
 		end
 	end
 end
