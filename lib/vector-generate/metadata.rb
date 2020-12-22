@@ -40,6 +40,8 @@ module VectorGenerate
       :tests,
       :posts,
       :releases,
+      :remap,
+      :services,
       :sinks,
       :sources,
       :team,
@@ -58,6 +60,8 @@ module VectorGenerate
       @options = meta_data.fetch("options").to_struct_with_name(constructor: Field)
       @posts = posts_data.collect { |hash| Post.new(hash) }
       @releases = OpenStruct.new()
+      @remap = meta_data.fetch("remap").to_struct
+      @services = meta_data.fetch("services").to_struct
       @sinks = OpenStruct.new()
       @sources = OpenStruct.new()
       @transforms = OpenStruct.new()
@@ -120,7 +124,7 @@ module VectorGenerate
             BatchingSink.new(sink_hash)
           when "aggregate", "exposing", "expose"
             ExposingSink.new(sink_hash)
-          when "streaming", "stream"
+          when "streaming", "stream", "dynamic"
             StreamingSink.new(sink_hash)
           else
             raise "Bad method! #{sink_hash.fetch("egress_method").inspect}"
@@ -271,12 +275,10 @@ module VectorGenerate
     def to_h
       {
         event_types: event_types,
-        guides: guides.deep_to_h,
         installation: installation2.deep_to_h,
         latest_highlight: highlights.last.deep_to_h,
         latest_post: posts.last.deep_to_h,
         latest_release: latest_release.deep_to_h,
-        highlights: highlights.deep_to_h,
         posts: posts.deep_to_h,
         post_tags: post_tags,
         releases: releases.deep_to_h,

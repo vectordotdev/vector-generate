@@ -11,6 +11,7 @@ module VectorGenerate
     class Source < Component
       attr_reader :delivery_guarantee,
         :fields,
+        :installation,
         :noun,
         :output_types,
         :link_name,
@@ -24,6 +25,7 @@ module VectorGenerate
 
         @delivery_guarantee = hash.fetch("delivery_guarantee")
         @fields = OpenStruct.new
+        @installation = hash.fetch("installation").to_struct
         @noun = hash.fetch("noun")
         @output_types = hash.fetch("output_types")
         @strategies = hash["strategies"] || []
@@ -38,7 +40,7 @@ module VectorGenerate
         end
 
         if fields["metric"]
-          @fields.metric = Fields.new(fields["metric"])
+          @fields.metric = fields.fetch("metric").to_struct
         end
       end
 
@@ -57,10 +59,6 @@ module VectorGenerate
 
       def log_fields_list
         @log_fields_list ||= fields.log ? fields.log.fields_list : []
-      end
-
-      def short_description
-        @short_description ||= "Ingests data through #{through_description} and outputs #{output_types.to_sentence} events."
       end
 
       def to_h

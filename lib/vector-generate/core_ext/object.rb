@@ -51,22 +51,35 @@ class Object
       iso8601()
     elsif is_a?(Time)
       strftime('%Y-%m-%dT%H:%M:%SZ')
-    elsif is_a?(String) && include?("\n")
-      result =
-        <<~EOF
-        """
-        #{self}
-        """
-        EOF
-
-      result.chomp
-    elsif is_a?(String) && include?("\\")
-      "'#{self}'"
     elsif is_a?(String)
-      begin
-        Time.iso8601(self).to_toml
-      rescue ArgumentError
-        inspect
+      if include?("\n")
+        if include?("\"")
+          result =
+            <<~EOF
+            '''
+            #{self}
+            '''
+            EOF
+
+          result.chomp
+        else
+          result =
+            <<~EOF
+            """
+            #{self}
+            """
+            EOF
+
+          result.chomp
+        end
+      elsif include?("\\")
+        "'#{self}'"
+      else
+        begin
+          Time.iso8601(self).to_toml
+        rescue ArgumentError
+          inspect
+        end
       end
     elsif is_primitive_type?
       inspect

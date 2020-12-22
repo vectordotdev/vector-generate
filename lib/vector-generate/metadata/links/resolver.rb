@@ -61,7 +61,7 @@ module VectorGenerate
 
 			          This link matches more than 1 doc:
 
-			          * #{found_links.join("\n  * ").indent(2)}
+			          * #{found_permalinks.join("\n  * ").indent(2)}
 
 			          Please use something more specific that will match only a single document.
 			          EOF

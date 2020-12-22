@@ -34,6 +34,8 @@ module VectorGenerate
           },
           "installation" => ref.fetch("installation"),
           "releases" => ref.fetch("releases"),
+          "remap" => ref.fetch("remap"),
+          "services" => ref.fetch("services"),
           "sources" => {},
           "transforms" => {},
           "sinks" => {},
@@ -67,22 +69,23 @@ module VectorGenerate
           output = component["output"]
           input = component["input"]
           support = component.fetch("support")
-          platforms = support.fetch("platforms")
+          targets = support.fetch("targets")
 
           new_component =
             {
               "title" => component.fetch("title"),
               "beta" => (classes.fetch("development") == "beta"),
               "common" => classes.fetch("commonly_used"),
-              "description" => component["description"],
+              "short_description" => (component["description"] ? component["description"].gsub("\n", " ") : nil),
               "egress_method" => classes["egress_method"],
               "env_vars" => {},
               "examples" => [],
               "fields" => {},
               "features" => [],
+              "features_raw" => features,
               "function_category" => function,
               "how_it_works" => component["how_it_works"],
-              "new_features" => features,
+              "installation" => component["installation"],
               "only_operating_systems" => [],
               "requirements" => {},
               "requirements_list" => component["requirements"] || [],
@@ -91,15 +94,15 @@ module VectorGenerate
               "options" => {}
             }
 
-          if platforms.fetch("aarch64-unknown-linux-gnu") || platforms.fetch("x86_64-unknown-linux-gnu")
+          if targets.fetch("aarch64-unknown-linux-gnu") || targets.fetch("x86_64-unknown-linux-gnu")
             new_component["only_operating_systems"] << "Linux"
           end
 
-          if platforms.fetch("x86_64-apple-darwin")
+          if targets.fetch("x86_64-apple-darwin")
             new_component["only_operating_systems"] << "macOS"
           end
 
-          if platforms.fetch("x86_64-pc-windows-msv")
+          if targets.fetch("x86_64-pc-windows-msv")
             new_component["only_operating_systems"] << "Windows"
           end
 
@@ -148,7 +151,7 @@ module VectorGenerate
           versions = service["versions"]
 
           new_component["noun"] = thing
-          new_component["short_description"] = "#{function.pluralize.sub(/^./, &:upcase)} #{types.collect(&:pluralize).join(" and ")}" + (service_name ? ((!to.nil? ? " to " : " from ") + (url ? "[#{service_name}](#{url})." : "#{service_name}")) : "").freeze
+          new_component["short_description"] ||= "#{function.pluralize.sub(/^./, &:upcase)} #{types.collect(&:pluralize).join(" and ")}" + (service_name ? ((!to.nil? ? " to " : " from ") + (url ? "[#{service_name}](#{url})." : "#{service_name}")) : "").freeze
 
           new_component["features"] ||= []
           new_component["features"] << new_component["short_description"]
@@ -175,15 +178,7 @@ module VectorGenerate
           end
 
           if output && output["metrics"]
-            new_component["fields"]["metric"] = {"fields" => {}}
-
-            output["metrics"].each do |k, v|
-              new_component["fields"]["metric"]["fields"][k] = transform_option({
-                "description" => v.fetch("description"),
-                "relevant_when" => v["relevant_when"],
-                "type" => {v.fetch("type") => {}}
-              })
-            end
+            new_component["fields"]["metric"] = output["metrics"]
           end
 
           examples.each do |example|
@@ -327,11 +322,14 @@ module VectorGenerate
 
           output_text =
             if output && !output.is_a?(String)
+              type = output.is_a?(Hash) ? output.keys.first : output.fetch(0).keys.first
+              data = output.is_a?(Hash) ? output.values.first : output
+
               <<~EOF
-              The following [Vector event][docs.data-model] will be output:
+              The following [Vector #{type} event][docs.data-model.#{type}] will be output:
 
               ```json
-              #{JSON.pretty_generate(output)}
+              #{JSON.pretty_generate(data)}
               ```
               EOF
             elsif output

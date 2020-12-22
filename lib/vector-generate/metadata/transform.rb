@@ -30,7 +30,7 @@ module VectorGenerate
         end
 
         if fields["metric"]
-          @fields.metric = Fields.new(fields["metric"])
+          @fields.metric = fields.fetch("metric").to_struct
         end
       end
 
@@ -58,10 +58,6 @@ module VectorGenerate
         else
           raise ArgumentError.new("Uknown component type: #{component.class.name}")
         end
-      end
-
-      def short_description
-        @short_description ||= "Accepts #{input_types.to_sentence} events and allows you to #{allow_you_to_description}."
       end
 
       def log_fields_list

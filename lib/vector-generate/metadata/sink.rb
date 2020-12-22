@@ -65,10 +65,6 @@ module VectorGenerate
         end
       end
 
-      def short_description
-        @short_description ||= "#{plural_write_verb.humanize} #{input_types.to_sentence} events to #{write_to_description}."
-      end
-
       def streaming?
         egress_method == "streaming"
       end
