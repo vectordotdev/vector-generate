@@ -10,8 +10,7 @@ module VectorGenerate
     class Component
       include Comparable
 
-      attr_reader :beta,
-        :common,
+      attr_reader :common,
         :env_vars,
         :examples,
         :features,
@@ -25,10 +24,9 @@ module VectorGenerate
         :options,
         :permissions,
         :posts,
-        :requirements,
-        :requirements_list,
         :service_providers,
         :short_description,
+        :status,
         :support,
         :telemetry,
         :title,
@@ -36,7 +34,6 @@ module VectorGenerate
         :unsupported_operating_systems
 
       def initialize(hash)
-        @beta = hash["beta"] == true
         @common = hash["common"] == true
         @env_vars = (hash["env_vars"] || {}).to_struct_with_name(constructor: Field)
         @examples = (hash["examples"] || []).collect { |e| Example.new(e) }
@@ -47,11 +44,10 @@ module VectorGenerate
         @name = hash.fetch("name")
         @permissions = (hash["permissions"] || {}).to_struct_with_name(constructor: Permission)
         @posts = hash.fetch("posts")
-        @requirements = OpenStruct.new(hash["requirements"] || {})
-        @requirements_list = hash["requirements_list"] || []
         @service_providers = hash["service_providers"] || []
         @short_description = hash.fetch("short_description")
-        @support = hash["support"]
+        @status = hash.fetch("status")
+        @support = hash["support"].to_struct
         @telemetry = hash["telemetry"] ? hash.fetch("telemetry").to_struct : nil
         @title = hash.fetch("title")
         @type ||= self.class.name.split("::").last.downcase
@@ -76,7 +72,7 @@ module VectorGenerate
       end
 
       def beta?
-        beta == true
+        status == "beta"
       end
 
       def config_example(format)
@@ -104,6 +100,10 @@ module VectorGenerate
 
       def context_options
         options_list.select(&:context?)
+      end
+
+      def deprecated?
+        status == "deprecated"
       end
 
       def env_vars_list
@@ -230,8 +230,8 @@ module VectorGenerate
         end
       end
 
-      def status
-        beta? ? "beta" : "stable"
+      def stable?
+        status == "stable"
       end
 
       def templateable_options
@@ -250,7 +250,6 @@ module VectorGenerate
           logo_path: logo_path,
           name: name,
           operating_systems: (transform? ? [] : operating_systems),
-          requirements: requirements.deep_to_h,
           service_providers: service_providers,
           short_description: (short_description ? short_description.remove_markdown_links : nil),
           status: status,
@@ -262,14 +261,6 @@ module VectorGenerate
 
       def transform?
         type == "transform"
-      end
-
-      def warnings
-        @warnings ||= options_list.
-          collect { |option| option.all_warnings }.
-          flatten.
-          select { |warning| warning.visibility_level == "component" }.
-          freeze
       end
     end
   end

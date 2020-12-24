@@ -74,7 +74,6 @@ module VectorGenerate
           new_component =
             {
               "title" => component.fetch("title"),
-              "beta" => (classes.fetch("development") == "beta"),
               "common" => classes.fetch("commonly_used"),
               "short_description" => (component["description"] ? component["description"].gsub("\n", " ") : nil),
               "egress_method" => classes["egress_method"],
@@ -87,9 +86,8 @@ module VectorGenerate
               "how_it_works" => component["how_it_works"],
               "installation" => component["installation"],
               "only_operating_systems" => [],
-              "requirements" => {},
-              "requirements_list" => component["requirements"] || [],
-              "support" => component.fetch("support"),
+              "status" => classes.fetch("development"),
+              "support" => support,
               "telemetry" => component["telemetry"],
               "options" => {}
             }
@@ -161,7 +159,7 @@ module VectorGenerate
           end
 
           if versions
-            new_component["requirements_list"] << (url ? "[#{service_name}](#{url})" : "#{service_name}") + " #{versions} is required."
+            new_component["support"]["requirements"] << (url ? "[#{service_name}](#{url})" : "#{service_name}") + " #{versions} is required."
           end
 
           if component.fetch("kind") != "source"
