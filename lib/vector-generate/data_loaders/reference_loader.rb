@@ -9,11 +9,21 @@ module VectorGenerate
           "#{dir}/docs/reference/components/*.cue " +
           "#{dir}/docs/reference/data_model/*.cue " +
           "#{dir}/docs/reference/installation/*.cue " +
+          "#{dir}/docs/reference/installation/_interfaces/role_implementations/*.cue " +
           "#{dir}/docs/reference/installation/_interfaces/*.cue " +
+          "#{dir}/docs/reference/installation/downloads/*.cue " +
           "#{dir}/docs/reference/installation/operating_systems/*.cue " +
+          "#{dir}/docs/reference/installation/package_managers/*.cue " +
           "#{dir}/docs/reference/installation/platforms/*.cue " +
+          "#{dir}/docs/reference/installation/roles/*.cue " +
           "#{dir}/docs/reference/releases/*.cue " +
           "#{dir}/docs/reference/remap/*.cue " +
+          "#{dir}/docs/reference/remap/concepts/*.cue " +
+          "#{dir}/docs/reference/remap/expressions/*.cue " +
+          "#{dir}/docs/reference/remap/features/*.cue " +
+          "#{dir}/docs/reference/remap/functions/*.cue " +
+          "#{dir}/docs/reference/remap/literals/*.cue " +
+          "#{dir}/docs/reference/remap/principles/*.cue " +
           "#{dir}/docs/reference/components/sources/*.cue " +
           "#{dir}/docs/reference/components/transforms/*.cue " +
           "#{dir}/docs/reference/components/sinks/*.cue " +

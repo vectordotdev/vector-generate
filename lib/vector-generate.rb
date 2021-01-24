@@ -38,6 +38,12 @@ module VectorGenerate
     Printer.say("Found #{template_paths.size} templates to render")
 
     template_paths.each do |template_path|
+      render_template(root_dir, templates, template_path, relative_link_paths)
+    end
+  end
+
+  def self.render_template(root_dir, templates, template_path, relative_link_paths)
+    begin
       content = templates.render(template_path)
 
       if template_path.end_with?(".md.erb")
@@ -47,6 +53,7 @@ module VectorGenerate
         content = PostProcessors::SectionReferencer.reference!(content)
         content = PostProcessors::OptionLinker.link!(content)
         content = PostProcessors::LinkDefiner.define!(content, templates.metadata.links, relative_link_paths)
+        content = PostProcessors::VRLSyntaxConverter.convert!(content)
 
         # must be last
         #content = PostProcessors::LastModifiedSetter.set!(content, template_path)

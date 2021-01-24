@@ -7,28 +7,42 @@ module VectorGenerate
 
 			def load!(dir)
 				{
+					"basic" => {
+						"title" => "Basic",
+						"description" => "Get started and learn the Vector basics.",
+						"guides" => load_root_dir!(dir),
+						"series" => false
+					},
 					"advanced" => {
 						"title" => "Advanced",
-						"description" => "Go beyond the basics, become a Vector pro, and extract the full potential of Vector.",
+						"description" => "Advanced guides that go deep on specific features and niches.",
 						"guides" => load_sub_dir!(dir, "advanced"),
 						"series" => false
 					},
-					"getting-started" => {
-						"title" => "Getting Started",
-						"description" => "Take Vector from zero to production in under 10 minutes.",
-						"guides" => load_sub_dir!(dir, "getting-started"),
-						"series" => true
-					},
 					"integrate" => {
 						"title" => "Integrate",
-						"description" => "Targeted guides for integrating platforms, data sources, and data destinations.",
+						"description" => "Simple step-by-step integration guides.",
 						"guides" => load_sub_dir!(dir, "integrate"),
 						"series" => false
-					}
+					},
+					"level-up" => {
+						"title" => "Level up",
+						"description" => "Go from Vector beginner to pro! Everything you need to use Vector confidently.",
+						"guides" => load_sub_dir!(dir, "level-up"),
+						"series" => true
+					},
 				}
 			end
 
 			private
+				def load_root_dir!(dir)
+					Dir.
+			      glob("#{dir}/*.md").
+			      filter { |path| File.read(path).start_with?("---\n") }.
+			      collect { |path| parse_file!(dir, path) }.
+			      sort_by { |hash| [ hash["series_position"], hash.fetch("title") ] }
+				end
+
 				def load_sub_dir!(dir, sub_dir)
 					Dir.
 			      glob("#{dir}/#{sub_dir}/**/*.md").

@@ -28,11 +28,11 @@ module VectorGenerate
       end
 
       def operating_systems_list
-        @operating_systems_list ||= operating_systems.to_h.values.sort_by(&:title)
+        @operating_systems_list ||= operating_systems.to_h.values.sort_by { |o| o.title.downcase }
       end
 
       def package_managers_list
-        @package_managers_list ||= package_managers.to_h.values.sort_by(&:title)
+        @package_managers_list ||= package_managers.to_h.values.sort_by { |o| o.title.downcase }
       end
 
       def platforms_list

@@ -31,6 +31,10 @@ module VectorGenerate
 			    value
 			  end
 
+			  def resolved
+			  	@values.keys
+			  end
+
 			  private
 			  	def fetch_permalink!(parsed_id)
 			  		category_permalinks = @permalinks.fetch(parsed_id.category)

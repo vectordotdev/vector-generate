@@ -40,7 +40,7 @@ class String
   end
 
   def html_escape
-    ERB::Util.html_escape(self)
+    ERB::Util.html_escape(self).gsub("\\", "&bsol;").gsub("{", "&#x007B;").gsub("}", "&#x007D;")
   end
 
   def humanize

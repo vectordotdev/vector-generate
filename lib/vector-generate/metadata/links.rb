@@ -28,7 +28,6 @@ module VectorGenerate
       def initialize(links, permalinks)
         @links = links
         @resolver = Resolver.new(permalinks)
-        @values = {}
       end
 
       def exists?(id)
@@ -54,6 +53,10 @@ module VectorGenerate
       def fetch_id(id)
         # Docusaurus does not allow a leading or trailing `/`
         fetch(id).split("/")[2..-1].join("/").gsub(/\/$/, "")
+      end
+
+      def dead
+        @links.fetch("urls").keys - @resolver.resolved
       end
 
       private
