@@ -26,6 +26,7 @@ module VectorGenerate
         :posts,
         :service_providers,
         :short_description,
+        :stateful,
         :status,
         :support,
         :telemetry,
@@ -46,6 +47,7 @@ module VectorGenerate
         @posts = hash.fetch("posts")
         @service_providers = hash["service_providers"] || []
         @short_description = hash.fetch("short_description")
+        @stateful = hash.fetch("stateful")
         @status = hash.fetch("status")
         @support = hash["support"].to_struct
         @telemetry = hash["telemetry"] ? hash.fetch("telemetry").to_struct : nil
@@ -232,10 +234,6 @@ module VectorGenerate
 
       def stable?
         status == "stable"
-      end
-
-      def templateable_options
-        options_list.select(&:templateable?)
       end
 
       def to_h

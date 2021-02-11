@@ -19,11 +19,13 @@ module VectorGenerate
           "#{dir}/docs/reference/releases/*.cue " +
           "#{dir}/docs/reference/remap/*.cue " +
           "#{dir}/docs/reference/remap/concepts/*.cue " +
+          "#{dir}/docs/reference/remap/errors/*.cue " +
           "#{dir}/docs/reference/remap/expressions/*.cue " +
           "#{dir}/docs/reference/remap/features/*.cue " +
           "#{dir}/docs/reference/remap/functions/*.cue " +
           "#{dir}/docs/reference/remap/literals/*.cue " +
           "#{dir}/docs/reference/remap/principles/*.cue " +
+          "#{dir}/docs/reference/remap/syntax/*.cue " +
           "#{dir}/docs/reference/components/sources/*.cue " +
           "#{dir}/docs/reference/components/transforms/*.cue " +
           "#{dir}/docs/reference/components/sinks/*.cue " +
@@ -33,12 +35,19 @@ module VectorGenerate
         json = `#{cmd}`
         ref = JSON.parse(json)
         ref_components = ref.fetch("components")
+        ref_configuration = ref.fetch("configuration")
         api = ref.fetch("api")
         api["configuration"] = transform_schema(api.fetch("configuration"))
+
+        ref.fetch("configuration")
 
         meta = {
           "api" => api,
           "cli" => ref.fetch("cli"),
+          "configuration" => {
+            "configuration" => transform_schema(ref_configuration.fetch("configuration")),
+            "how_it_works" => ref_configuration.fetch("how_it_works")
+          },
           "data_model" => {
             "schema" => transform_schema(ref.fetch("data_model").fetch("schema"))
           },
@@ -96,6 +105,7 @@ module VectorGenerate
               "how_it_works" => component["how_it_works"],
               "installation" => component["installation"],
               "only_operating_systems" => [],
+              "stateful" => classes.fetch("stateful"),
               "status" => classes.fetch("development"),
               "support" => support,
               "telemetry" => component["telemetry"],
@@ -230,7 +240,7 @@ module VectorGenerate
 
           new_option =
             {
-              "templateable" => type["templateable"],
+              "syntax" => type["syntax"],
               "type" => type_name,
               "description" => option.fetch("description")
             }
@@ -311,11 +321,14 @@ module VectorGenerate
 
           input_text =
             if input && !input.is_a?(String)
+              type = input.is_a?(Hash) ? input.keys.first : input.fetch(0).keys.first
+              data = input.is_a?(Hash) ? input.values.first : input.collect { |o| o.values.first }
+
               <<~EOF
-              Given the following [Vector event][docs.data-model]:
+              Given the following [Vector #{type} event][docs.data-model.#{type}]:
 
               ```json
-              #{JSON.pretty_generate(input)}
+              #{JSON.pretty_generate(data)}
               ```
               EOF
             elsif input
@@ -331,7 +344,7 @@ module VectorGenerate
           output_text =
             if output && !output.is_a?(String)
               type = output.is_a?(Hash) ? output.keys.first : output.fetch(0).keys.first
-              data = output.is_a?(Hash) ? output.values.first : output
+              data = output.is_a?(Hash) ? output.values.first : output.collect { |o| o.values.first }
 
               <<~EOF
               The following [Vector #{type} event][docs.data-model.#{type}] will be output:
@@ -357,7 +370,7 @@ module VectorGenerate
               #{input_text}
               And the following configuration:
 
-              ```toml
+              ```toml title="vector.toml"
               [#{component.fetch("kind").pluralize}.#{component.fetch("type")}]
               type = "#{component.fetch("type")}"
               #{example.fetch("configuration").to_toml(hash_style: :flatten).strip}

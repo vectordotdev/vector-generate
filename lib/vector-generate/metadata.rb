@@ -3,6 +3,7 @@ require "ostruct"
 require "toml-rb"
 
 require_relative "metadata/batching_sink"
+require_relative "metadata/configuration"
 require_relative "metadata/data_model"
 require_relative "metadata/exposing_sink"
 require_relative "metadata/field"
@@ -28,6 +29,7 @@ module VectorGenerate
     attr_reader :api,
       :blog_posts,
       :cli,
+      :configuration,
       :data_model,
       :domains,
       :env_vars,
@@ -36,7 +38,6 @@ module VectorGenerate
       :installation,
       :installation2,
       :links,
-      :options,
       :tests,
       :posts,
       :releases,
@@ -51,13 +52,13 @@ module VectorGenerate
       @api = meta_data.fetch("api").to_struct
       @api["configuration"] = @api.configuration.to_h.to_struct_with_name(constructor: Field)
       @cli = meta_data.fetch("cli").to_struct
+      @configuration = Configuration.new(meta_data.fetch("configuration"))
       @data_model = DataModel.new(meta_data.fetch("data_model"))
       @domains = meta_data.fetch("domains").collect { |h| OpenStruct.new(h) }
       @guides = guides_data.to_struct_with_name(constructor: Guides)
       @highlights = highlights_data.collect { |hash| Highlight.new(hash) }
       @installation = Installation.new(meta_data.fetch("installation"))
       @installation2 = Installation2.new(meta_data.fetch("installation2"))
-      @options = meta_data.fetch("options").to_struct_with_name(constructor: Field)
       @posts = posts_data.collect { |hash| Post.new(hash) }
       @releases = OpenStruct.new()
       @remap = meta_data.fetch("remap").to_struct

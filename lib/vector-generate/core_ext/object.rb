@@ -72,7 +72,7 @@ class Object
 
           result.chomp
         end
-      elsif include?("\\")
+      elsif include?("\\") || include?("\"")
         "'#{self}'"
       else
         begin

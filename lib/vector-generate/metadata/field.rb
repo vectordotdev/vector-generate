@@ -62,7 +62,7 @@ module VectorGenerate
         :relevant_when,
         :required,
         :sort,
-        :templateable,
+        :syntax,
         :toml_display,
         :type,
         :unit,
@@ -82,7 +82,7 @@ module VectorGenerate
         @relevant_when = hash["relevant_when"]
         @required = hash["required"] == true
         @sort = hash["sort"]
-        @templateable = hash["templateable"] == true
+        @syntax = hash["syntax"]
         @toml_display = hash["toml_display"]
         @type = hash.fetch("type")
         @unit = hash["unit"]
@@ -292,10 +292,6 @@ module VectorGenerate
         @sort != nil
       end
 
-      def templateable?
-        templateable == true
-      end
-
       def to_h
         {
           name: name,
@@ -308,7 +304,7 @@ module VectorGenerate
           partition_key: partition_key,
           relevant_when: relevant_when,
           required: required?,
-          templateable: templateable,
+          syntax: syntax,
           type: type,
           unit: unit
         }

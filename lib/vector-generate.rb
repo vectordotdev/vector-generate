@@ -54,6 +54,7 @@ module VectorGenerate
         content = PostProcessors::OptionLinker.link!(content)
         content = PostProcessors::LinkDefiner.define!(content, templates.metadata.links, relative_link_paths)
         content = PostProcessors::VRLSyntaxConverter.convert!(content)
+        content = PostProcessors::VectorHostRemover.convert!(content)
 
         # must be last
         #content = PostProcessors::LastModifiedSetter.set!(content, template_path)
