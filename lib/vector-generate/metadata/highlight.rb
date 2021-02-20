@@ -8,7 +8,6 @@ module VectorGenerate
         :description,
         :hide_on_release_notes,
         :id,
-        :path,
         :permalink,
         :pr_numbers,
         :release,
@@ -35,7 +34,7 @@ module VectorGenerate
             The following "breaking change" highlight does not have an "Upgrade
             Guide" section:
 
-                #{path}
+                #{id}
 
             This is required for all "breaking change" highlights to ensure
             we provide a good, consistent UX for upgrading users. To fix this,
@@ -110,7 +109,6 @@ module VectorGenerate
           description: description,
           hide_on_release_notes: hide_on_release_notes,
           id: id,
-          path: path,
           permalink: permalink,
           tags: tags,
           title: title

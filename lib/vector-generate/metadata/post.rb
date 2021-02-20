@@ -3,7 +3,7 @@ module VectorGenerate
     class Post
       include Comparable
 
-      attr_reader :author_github,
+      attr_reader :authors_githubs,
         :date,
         :description,
         :id,
@@ -13,7 +13,7 @@ module VectorGenerate
         :title
 
       def initialize(hash)
-        @author_github = hash.fetch("author_github")
+        @authors_githubs = hash.fetch("authors_githubs")
         @date = Date.parse(hash.fetch("date"))
         @description = hash.fetch("description")
         @id = hash.fetch("id")
@@ -52,7 +52,7 @@ module VectorGenerate
 
       def to_h
         {
-          author_github: author_github,
+          authors_githubs: authors_githubs,
           date: date,
           description: description,
           id: id,
